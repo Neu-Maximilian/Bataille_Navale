@@ -1,6 +1,12 @@
 #pragma once
+#include <iostream>
+#include <array>
+#include <string>
 
-typedef TAB = array<array<int, 10>, 10>;
+using namespace std;
+
+typedef TAB_GRILLE = array<array<int, 10>, 10>;
+typedef TAB_BATEAUX = array<Bateau, 7>;
 
 struct Grille
 {
@@ -10,5 +16,30 @@ struct Grille
 	int height = 400;
 	int cellWidth = width / 10;
 	int cellHeight = height / 10;
-	TAB tab;
+	TAB_GRILLE tab;
+};
+
+struct Bateau
+{
+	string id;
+	int x;
+	int y;
+	int size;
+	int orientation; // 0 = horizontal, 1 = vertical
+};
+
+struct Bateaux
+{
+	int n;
+	TAB_BATEAUX tab;
+};
+
+struct Button
+{
+	string text;
+	int x;
+	int y;
+	int width;
+	int height;
+	int color;
 };
