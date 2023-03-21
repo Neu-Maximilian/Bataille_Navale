@@ -5,6 +5,8 @@
 
 using namespace std;
 
+/* Donnes */
+
 using TAB_GRILLE = array<array<int, 10>, 10>;
 
 struct Grille
@@ -35,12 +37,21 @@ struct Bateaux
 	TAB_BATEAUX tab;
 };
 
-struct Button
+struct Joueur
 {
-	string text;
-	int x;
-	int y;
-	int width;
-	int height;
-	int color;
+	string name;
+	Grille grille;
+	Bateaux bateaux;
 };
+
+struct Bouton
+{
+	int x1, y1, x2, y2;
+	int couleur;
+	const char* texte;
+};
+
+/* Fonctions et procedures */
+
+void menu();
+void dessinerBouton(const Bouton &B);

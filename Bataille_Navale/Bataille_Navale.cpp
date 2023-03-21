@@ -9,15 +9,27 @@ using namespace std;
 const int HEIGHT = 720;
 const int WIDTH = 1280;
 
+void dessinerBouton(const Bouton& B)
+{
+	setfillstyle(SOLID_FILL, B.couleur);
+	bar(B.x1, B.y1, B.x2, B.y2);
+	setcolor(BLACK);
+	settextstyle(1, 0, 5);
+	outtextxy(B.x1, B.y1, B.texte);
+};
+
+void menu()
+{
+	opengraphsize(WIDTH, HEIGHT);
+	setbkcolor(WHITE);
+	cleardevice();
+	Bouton B_Jouer{WIDTH/2-50, HEIGHT/2-50, WIDTH/2+50, HEIGHT/2+50, BLUE, "Jouer"};
+	dessinerBouton(B_Jouer);
+	getch();
+}
+
 int main()
 {
-	cout << "Hello, World!" << endl;
-	opengraphsize(HEIGHT,WIDTH);
-	setbkcolor(RED);
-	cleardevice();
-	setcolor(WHITE);
-	settextstyle(0, 0, 1);
-	outtextxy(10, 10, "Hello, World!");
-	getch();
+	menu();
 	return 0;
 }
