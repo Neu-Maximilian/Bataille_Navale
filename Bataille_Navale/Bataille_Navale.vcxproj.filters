@@ -18,5 +18,16 @@
     <ClCompile Include="Bataille_Navale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winbgi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bataille_navale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

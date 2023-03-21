@@ -5,8 +5,7 @@
 
 using namespace std;
 
-typedef TAB_GRILLE = array<array<int, 10>, 10>;
-typedef TAB_BATEAUX = array<Bateau, 7>;
+using TAB_GRILLE = array<array<int, 10>, 10>;
 
 struct Grille
 {
@@ -27,6 +26,8 @@ struct Bateau
 	int size;
 	int orientation; // 0 = horizontal, 1 = vertical
 };
+
+using TAB_BATEAUX = array<Bateau, 7>;
 
 struct Bateaux
 {

@@ -2,6 +2,7 @@
 #include <array>
 #include <string>
 #include "graphics.h"
+#include "bataille_navale.h"
 
 using namespace std;
 
@@ -10,6 +11,7 @@ const int WIDTH = 1280;
 
 int main()
 {
+	cout << "Hello, World!" << endl;
 	opengraphsize(HEIGHT,WIDTH);
 	setbkcolor(RED);
 	cleardevice();
@@ -17,6 +19,5 @@ int main()
 	settextstyle(0, 0, 1);
 	outtextxy(10, 10, "Hello, World!");
 	getch();
-	closegraph();
 	return 0;
 }

@@ -133,7 +133,7 @@
     <ClCompile Include="winbgi.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bataille_Navale.h" />
+    <ClInclude Include="bataille_navale.h" />
     <ClInclude Include="graphics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

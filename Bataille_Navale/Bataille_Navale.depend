@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1678181908 source:c:\users\administrator\source\repos\bataille_navale\bataille_navale\winbgi.cpp
+	<windows.h>
+	<stddef.h>
+	<stdio.h>
+	<math.h>
+	"graphics.h"
+
+1678181908 c:\users\administrator\source\repos\bataille_navale\bataille_navale\graphics.h
+
+1679421096 source:c:\users\administrator\source\repos\bataille_navale\bataille_navale\bataille_navale.cpp
+	<iostream>
+	<array>
+	<string>
+	"graphics.h"
+	"bataille_navale.h"
+
+1679413781 c:\users\administrator\source\repos\bataille_navale\bataille_navale\bataille_navale.h
+	<iostream>
+	<array>
+	<string>
+
