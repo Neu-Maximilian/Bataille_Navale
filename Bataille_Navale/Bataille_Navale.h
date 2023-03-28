@@ -5,7 +5,12 @@
 
 using namespace std;
 
-/* Donnes */
+/* Constante */ 
+
+const int HEIGHT = 720;
+const int WIDTH = 1280;
+
+/* Donnees */
 
 using TAB_GRILLE = array<array<int, 10>, 10>;
 
@@ -17,6 +22,7 @@ struct Grille
 	int height = 400;
 	int cellWidth = width / 10;
 	int cellHeight = height / 10;
+	// 0 = vide, 1 = bateau, 2 = touché, 3 = coulé
 	TAB_GRILLE tab;
 };
 
@@ -26,6 +32,7 @@ struct Bateau
 	int x;
 	int y;
 	int size;
+	int state; // 1 = intact, 2 = touché, 3 = coulé
 	int orientation; // 0 = horizontal, 1 = vertical
 };
 
@@ -51,7 +58,12 @@ struct Bouton
 	const char* texte;
 };
 
+
+
 /* Fonctions et procedures */
 
 void menu();
 void dessinerBouton(const Bouton &B);
+void dessinerGrille(const Grille &G);
+void dessinerBateaux(const Bateaux &B);
+void lireSouris(int &px, int &py);
