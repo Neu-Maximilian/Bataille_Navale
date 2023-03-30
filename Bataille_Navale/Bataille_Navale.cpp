@@ -6,39 +6,7 @@
 
 using namespace std;
 
-void dessinerBouton(const Bouton& B)
-{
-	setfillstyle(SOLID_FILL, B.couleur);
-	bar(B.x1, B.y1, B.x2, B.y2);
-	setcolor(BLACK);
-	outtextxy(B.x1+10, B.y1+10, B.texte);
-};
-
-void dessinerGrille(const Grille& G)
-{
-	setcolor(BLACK);
-	rectangle(G.x, G.y, G.x+G.width, G.y+G.height);
-	for (int i = 0; i < 10; i++)
-	{
-		line(G.x, G.y+i*G.cellHeight, G.x+G.width, G.y+i*G.cellHeight);
-		line(G.x+i*G.cellWidth, G.y, G.x+i*G.cellWidth, G.y+G.height);
-	}
-};
-
-void dessinerBateaux(const Bateaux& B)
-{
-	for (int i = 0; i < B.n; i++)
-	{
-		if (B.tab[i].orientation == 0)
-		{
-			rectangle(B.tab[i].x, B.tab[i].y, B.tab[i].x+B.tab[i].size*40, B.tab[i].y+40);
-		}
-		else
-		{
-			rectangle(B.tab[i].x, B.tab[i].y, B.tab[i].x+40, B.tab[i].y+B.tab[i].size*40);
-		}
-	}
-};
+void verbose(const string msg) { if (VERBOSE) clog << msg << endl; };
 
 void lireSouris(int& x, int& y)
 {
@@ -46,21 +14,66 @@ void lireSouris(int& x, int& y)
 	getmouse(x, y);
 }
 
+void dessinerBouton(const Bouton& B)
+{
+	setfillstyle(SOLID_FILL, B.couleur);
+	bar(B.x1, B.y1, B.x2, B.y2);
+	setcolor(WHITE);
+	setbkcolor(B.couleur);
+	settextjustify(CENTER_TEXT, CENTER_TEXT);
+	settextstyle(TRIPLEX_FONT, 0, 3); // fonts, direction, size
+	outtextxy((B.x1 + B.x2) / 2, (B.y1 + B.y2) / 2, B.texte);
+}
+
+bool lireBoutons(const Scene& S, int action)
+{
+	int x, y;
+	lireSouris(x, y);
+	for (auto& B : S.boutons)
+	{
+		if (x > B.x1 && x < B.x2 && y > B.y1 && y < B.y2)
+		{
+			return true;
+			action = B.id;
+		}
+	}
+}
+
 void menu()
 {
+
 }
 
 void tests()
 {
-	opengraphsize(WIDTH, HEIGHT);
-	setbkcolor(WHITE);
-	setcolor(BLACK);
+	Bouton SOLO = { 640 - 200, 720 - 300 , 640 + 200, 720 - 400, BLUE, "Solo",1 };
+	Scene S = { DEBUG, {SOLO} };
+	dessinerBouton(S.boutons[0]);
+	int action;
+	while (!lireBoutons(S, action))
+	{
+		delay(100);
+	}
+	verbose("Bouton clique");
+	//switch (action.id)
+	//{
+	//case 1:
+	//	verbose("Bouton SOLO");
+	//	break;
 
-	getch();
+	//default:
+	//	break;
+	//}
 }
 
 int main()
 {
+	VERBOSE = true;
+	opengraphsize(WIDTH, HEIGHT);
+	setbkcolor(LIGHTGRAY);
+	cleardevice();
+	verbose("Initialisation de la fenetre graphique");
 	tests();
+	getch();
 	return 0;
 }

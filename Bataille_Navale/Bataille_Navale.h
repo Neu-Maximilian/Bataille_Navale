@@ -5,10 +5,12 @@
 
 using namespace std;
 
-/* Constante */ 
+/* Constante */
 
 const int HEIGHT = 720;
 const int WIDTH = 1280;
+enum PAGES{ DEBUG, JEU, MENU, QUIT };
+bool VERBOSE = false;
 
 /* Donnees */
 
@@ -28,12 +30,12 @@ struct Grille
 
 struct Bateau
 {
-	string id;
 	int x;
 	int y;
 	int size;
 	int state; // 1 = intact, 2 = touché, 3 = coulé
 	int orientation; // 0 = horizontal, 1 = vertical
+	int id;
 };
 
 using TAB_BATEAUX = array<Bateau, 7>;
@@ -56,14 +58,21 @@ struct Bouton
 	int x1, y1, x2, y2;
 	int couleur;
 	const char* texte;
+	int id;
 };
 
+struct Scene
+{
+	PAGES page;
+	array<Bouton, 10> boutons;
+	Joueur joueur;
+};
 
 
 /* Fonctions et procedures */
 
 void menu();
-void dessinerBouton(const Bouton &B);
-void dessinerGrille(const Grille &G);
-void dessinerBateaux(const Bateaux &B);
-void lireSouris(int &px, int &py);
+void dessinerBouton(const Bouton& B);
+void dessinerGrille(const Grille& G);
+void dessinerBateaux(const Bateaux& B);
+void lireSouris(int& px, int& py);
