@@ -46,4 +46,4 @@ L'interface graphique du jeu est composée de 2 grilles de 10x10 cases. Chaque c
 ### Ressources
 
 * [WinBGIm](http://winbgim.codecutter.org/)
-* [![Figma]()](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FGyvtc3Flf72Qq77n7Rdadw%2FBataille-navale-maquettage%3Fnode-id%3D0%253A1%26t%3DfUmKLyKtygmzKNGy-1)
+* [Figma](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FGyvtc3Flf72Qq77n7Rdadw%2FBataille-navale-maquettage%3Fnode-id%3D0%253A1%26t%3DfUmKLyKtygmzKNGy-1)
