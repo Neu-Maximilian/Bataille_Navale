@@ -9,8 +9,6 @@ using namespace std;
 
 const int HEIGHT = 720;
 const int WIDTH = 1280;
-enum PAGES{ DEBUG, JEU, MENU, QUIT };
-bool VERBOSE = false;
 
 /* Donnees */
 
@@ -18,24 +16,24 @@ using TAB_GRILLE = array<array<int, 10>, 10>;
 
 struct Grille
 {
-	int x = 10;
-	int y = 10;
+	int x = 50;
+	int y = 50;
 	int width = 400;
 	int height = 400;
 	int cellWidth = width / 10;
 	int cellHeight = height / 10;
-	// 0 = vide, 1 = bateau, 2 = touché, 3 = coulé
+	// flags : 0 = vide, [1-6] = bateau, -1 = case en vue, -2 = rate, -3 = touche, -4 = coule
 	TAB_GRILLE tab;
 };
 
 struct Bateau
 {
+	string id;
 	int x;
 	int y;
 	int size;
-	int state; // 1 = intact, 2 = touché, 3 = coulé
+	int state; // 1 = intact, 2 = touche, 3 = coule
 	int orientation; // 0 = horizontal, 1 = vertical
-	int id;
 };
 
 using TAB_BATEAUX = array<Bateau, 7>;
@@ -50,7 +48,7 @@ struct Joueur
 {
 	string name;
 	Grille grille;
-	Bateaux bateaux;
+	Bateaux B;
 };
 
 struct Bouton
@@ -58,16 +56,14 @@ struct Bouton
 	int x1, y1, x2, y2;
 	int couleur;
 	const char* texte;
-	int id;
 };
 
-struct Scene
+
+//AjoutÃ©
+struct point
 {
-	PAGES page;
-	array<Bouton, 10> boutons;
-	Joueur joueur;
+	int x, y;
 };
-
 
 /* Fonctions et procedures */
 
