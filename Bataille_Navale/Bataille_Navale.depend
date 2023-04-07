@@ -8,14 +8,15 @@
 
 1678185508 c:\users\administrator\source\repos\bataille_navale\bataille_navale\graphics.h
 
-1680196931 source:c:\users\administrator\source\repos\bataille_navale\bataille_navale\bataille_navale.cpp
+1680797557 source:c:\users\administrator\source\repos\bataille_navale\bataille_navale\bataille_navale.cpp
 	<iostream>
 	<array>
 	<string>
+	<iomanip>
 	"graphics.h"
-	"bataille_navale.h"
+	"Bataille_Navale.h"
 
-1680195881 c:\users\administrator\source\repos\bataille_navale\bataille_navale\bataille_navale.h
+1680796788 c:\users\administrator\source\repos\bataille_navale\bataille_navale\bataille_navale.h
 	<iostream>
 	<array>
 	<string>
