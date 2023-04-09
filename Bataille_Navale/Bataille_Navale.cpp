@@ -74,9 +74,9 @@ bool placerBateau(Bateau &B, Grille &G)
         {
             G.tabGrille[B.x + i * estHorizontal][B.y + i * estVertical] = B.id;
         }
-        for (int i = -1; i <= B.taille * estHorizontal; i++)
+        for (int i = -1; i <= B.taille * estHorizontal + 1; i += 2)
         {
-            for (int j = -1; j <= B.taille * estVertical; j++)
+            for (int j = -1; j <= B.taille * estVertical + 1; j += 2)
             {
                 if (G.tabGrille[B.x + i][B.y + j] == VIDE && (B.x + i >= 0 && B.x + i < CASES) || (B.y + j >= 0 && B.y + j < CASES))
                 {
@@ -270,22 +270,55 @@ void initTabGrille(TAB_GRILLE &T)
     }
 }
 
-void initGrille(Grille& G, int x, int y, TAB_GRILLE tabGrille)
+void initGrille(Grille &G, int x, int y, TAB_GRILLE tabGrille, int nbBateaux, TAB_BATEAUX tabBateaux)
 {
-    G = {x, y, tabGrille, 0};
+    G.x = x;
+    G.y = y;
+    G.cellWidth = WIDTH / CASES;
+    G.cellHeight = HEIGHT / CASES;
+    G.tabGrille = tabGrille;
+    G.nbBateaux = nbBateaux;
+    G.tabBateaux = tabBateaux;
 }
 
-void initJoueur(Joueur& J, string nom, Grille grille, int nbBateaux, TAB_BATEAUX tabBateaux)
+void initJoueur(Joueur &J, string nom, Grille grille)
 {
-    J = {nom, grille, nbBateaux, tabBateaux};
+    J.nom = nom;
+    J.grille = grille;
 }
 
-void jeu(Joueur& J1, Joueur& J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux)
+void jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux)
 {
     // TODO
 }
 
-void finPartie(Joueur& J1, Joueur& J2)
+void finPartie(Joueur &J1, Joueur &J2)
 {
     // TODO
+}
+
+int main()
+{
+    initFenetre();
+    Bateau B1;
+    initBateau(B1, 1, 0, 0, PORTE_AVION, VERT_DIR);
+    Grille G;
+    TAB_GRILLE TG;
+    TAB_BATEAUX TB = {B1};
+    initTabGrille(TG);
+    initGrille(G, 0, 0, TG, 1,TB);
+    Joueur J;
+    initJoueur(J, "Joueur 1", G);
+    dessinerGrille(J.grille);
+    dessinerBateau(J.grille.tabBateaux[0], J.grille);
+    getch();
+    //     bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
+    //     Joueur J1, J2;
+    //     initFenetre();
+    //     menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
+    //     initJoueur(J1, "Joueur 1", initGrille(0, 0, initTabGrille()), choix6Bateaux ? 6 : 5, initTabBateaux(choix6Bateaux));
+    //     initJoueur(J2, "Joueur 2", initGrille(0, 0, initTabGrille()), choix6Bateaux ? 6 : 5, initTabBateaux(choix6Bateaux));
+    //     jeu(J1, J2, choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
+    //     finPartie(J1, J2);
+    return 0;
 }

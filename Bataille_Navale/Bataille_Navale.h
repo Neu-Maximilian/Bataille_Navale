@@ -8,8 +8,7 @@
 #define CASES 10
 #define NB_BATEAUX_MAX 7
 
-using TAB_GRILLE = array<array<int, CASES>, CASES>;
-using TAB_BATEAUX = array<Bateau, NB_BATEAUX_MAX>;
+using namespace std;
 
 enum states
 {
@@ -27,7 +26,7 @@ struct Point
 };
 
 /**
- *Structure pour les boutons contient: les coordonnees (x1,y1) et (x2,y2) du coin superieur gauche et du coin inferieur droit, la couleur, et le texte a afficher.
+ *Structure pour les boutons contient: les coordonnées (x1,y1) et (x2,y2) du coin supérieur gauche et du coin inférieur droit, la couleur, et le texte a afficher.
  */
 struct Bouton
 {
@@ -37,7 +36,23 @@ struct Bouton
 };
 
 /**
- *Structure pour les grilles contient: les coordonnees (x,y) du coin superieur gauche, la largeur et la hauteur,la largeur et la hauteur d'une case, un tableau de 10x10 cases contenant : 0 = vide, [1-6] = id_bateau, -1 = case en vue, -2 = rate, -3 = touche, -4 = coule , le nombre de bateaux, et un tableau de bateaux.
+ *Structure pour les bateaux contient: l'id du bateau [1-6], les coordonnées (x,y) du coin supérieur gauche, la taille, l’état (-1 = intact, -3 = touche, -4 = coule), et l'orientation (0 = horizontal, 1 = vertical).
+ */
+struct Bateau
+{
+	int id;
+	int x;
+	int y;
+	int taille;
+	int state;
+	int orientation; // 0 = horizontal, 1 = vertical
+};
+
+using TAB_GRILLE = array<array<int, CASES>, CASES>;
+using TAB_BATEAUX = array<Bateau, NB_BATEAUX_MAX>;
+
+/**
+ *Structure pour les grilles contient: les coordonnées (x,y) du coin supérieur gauche, la largeur et la hauteur,la largeur et la hauteur d'une case, un tableau de 10x10 cases contenant : 0 = vide, [1-6] = id_bateau, -1 = case en vue, -2 = rate, -3 = touche, -4 = coule , le nombre de bateaux, et un tableau de bateaux.
  */
 struct Grille
 {
@@ -50,19 +65,6 @@ struct Grille
 	TAB_GRILLE tabGrille;
 	int nbBateaux;
 	TAB_BATEAUX tabBateaux;
-};
-
-/**
- *Structure pour les bateaux contient: l'id du bateau [1-6], les coordonnees (x,y) du coin superieur gauche, la taille, l'etat (-1 = intact, -3 = touche, -4 = coule), et l'orientation (0 = horizontal, 1 = vertical).
- */
-struct Bateau
-{
-	int id;
-	int x;
-	int y;
-	int taille;
-	int state;
-	int orientation; // 0 = horizontal, 1 = vertical
 };
 
 /**
@@ -79,14 +81,14 @@ struct Joueur
 /**
  * \param a entier minimum
  * \param b entier maximum
- * \return un entier aleatoire entre a et b
+ * \return un entier aléatoire entre a et b
  */
 int aleat(int a, int b);
 
 /**
- * \param x coordonnee x de la souris
- * \param y coordonnee y de la souris
- * \brief attend que l'utilisateur clique sur la souris et retourne les coordonnees de la souris
+ * \param x coordonnée x de la souris
+ * \param y coordonnée y de la souris
+ * \brief attend que l'utilisateur clique sur la souris et retourne les coordonnées de la souris
  */
 void lireSouris(int& x, int& y);
 
@@ -117,7 +119,7 @@ void dessinerBateau(const Bateau& B);
 bool placerBateau(Bateau& B, Grille& G);
 
 /**
- * Place les bateaux aleatoirement sur la grille.
+ * Place les bateaux aléatoirement sur la grille.
  * \param T un tableau de bateaux
  * \param G une grille
  */
@@ -148,15 +150,15 @@ int tirer(Grille& G, int x, int y);
 
 /**
  * \param G une grille
- * \param x coordonnee x de la souris
- * \param y coordonnee y de la souris
+ * \param x coordonnée x de la souris
+ * \param y coordonnée y de la souris
  */
 void tirerJoueur(int& x, int& y, Grille& G);
 
 /**
  * \param G une grille
- * \param x coordonnee x de la souris
- * \param y coordonnee y de la souris
+ * \param x coordonnée x de la souris
+ * \param y coordonnée y de la souris
  * \param modeDifficile true si le mode difficile est active, false sinon
  */
 void tirerOrdi(int& x, int& y, bool modeDifficile, Grille& G);
@@ -164,17 +166,17 @@ void tirerOrdi(int& x, int& y, bool modeDifficile, Grille& G);
 // Initialisation du jeu
 
 /**
- * Initialise la fenetre.
+ * Initialise la fenêtre.
 */
 void initFenetre();
 
 /**
  * Initialise le bouton.
  * \param B un bouton
- * \param x1 la coordonnee x du coin superieur gauche du bouton
- * \param y1 la coordonnee y du coin superieur gauche du bouton
- * \param x2 la coordonnee x du coin inferieur droit du bouton
- * \param y2 la coordonnee y du coin inferieur droit du bouton
+ * \param x1 la coordonnée x du coin supérieur gauche du bouton
+ * \param y1 la coordonnée y du coin supérieur gauche du bouton
+ * \param x2 la coordonnée x du coin inférieur droit du bouton
+ * \param y2 la coordonnée y du coin inférieur droit du bouton
  * \param couleur la couleur du bouton
  * \param texte le texte a afficher dans le bouton
  */
@@ -189,8 +191,8 @@ void menu(bool &choixMultiJoueur, bool &choixDifficile, bool &choixTirSalves, bo
  * Initialise le bateau.
  * \param B un bateau
  * \param id l'id du bateau
- * \param x la coordonnee x du bateau
- * \param y la coordonnee y du bateau
+ * \param x la coordonnée x du bateau
+ * \param y la coordonnée y du bateau
  * \param size la taille du bateau
  * \param orientation l'orientation du bateau
  */
@@ -205,11 +207,13 @@ void initTabGrille(TAB_GRILLE& T);
 /**
  * Initialise la grille.
  * \param G une grille
- * \param x la coordonnee x de la grille
- * \param y la coordonnee y de la grille
+ * \param x la coordonnée x de la grille
+ * \param y la coordonnée y de la grille
  * \param tabGrille le tableau de la grille
+ * \param nbBateaux le nombre de bateaux
+ * \param tabBateaux le tableau de bateaux
  */
-void initGrille(Grille& G, int x, int y, TAB_GRILLE tabGrille);
+void initGrille(Grille &G, int x, int y, TAB_GRILLE tabGrille, int nbBateaux, TAB_BATEAUX tabBateaux);
 
 /**
  * Initialise le joueur.
@@ -225,10 +229,17 @@ void initJoueur(Joueur& J, string nom, Grille grille, int nbBateaux, TAB_BATEAUX
  * Initialise le jeu.
  * \param J1 le joueur 1
  * \param J2 le joueur 2
+ * \param choixMultiJoueur true si le mode multijoueur est active, false sinon
+ * \param choixDifficile true si le mode difficile est active, false sinon
+ * \param choixTirSalves true si le mode tir salves est active, false sinon
+ * \param choixCaseEnVue true si le mode case en vue est active, false sinon
+ * \param choix6Bateaux true si le mode 6 bateaux est active, false sinon
  */
 void jeu(Joueur& J1, Joueur& J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux);
 
 /**
- * Ecran de fin de partie.
+ * Écran de fin de partie.
+ * \param J1 le joueur 1
+ * \param J2 le joueur 2
 */
 void finPartie(Joueur& J1, Joueur& J2);
