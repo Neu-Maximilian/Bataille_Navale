@@ -274,8 +274,6 @@ void initGrille(Grille &G, int x, int y, TAB_GRILLE tabGrille, int nbBateaux, TA
 {
     G.x = x;
     G.y = y;
-    G.cellWidth = WIDTH / CASES;
-    G.cellHeight = HEIGHT / CASES;
     G.tabGrille = tabGrille;
     G.nbBateaux = nbBateaux;
     G.tabBateaux = tabBateaux;
@@ -300,18 +298,7 @@ void finPartie(Joueur &J1, Joueur &J2)
 int main()
 {
     initFenetre();
-    Bateau B1;
-    initBateau(B1, 1, 0, 0, PORTE_AVION, VERT_DIR);
-    Grille G;
-    TAB_GRILLE TG;
-    TAB_BATEAUX TB = {B1};
-    initTabGrille(TG);
-    initGrille(G, 0, 0, TG, 1,TB);
-    Joueur J;
-    initJoueur(J, "Joueur 1", G);
-    dessinerGrille(J.grille);
-    dessinerBateau(J.grille.tabBateaux[0], J.grille);
-    getch();
+    
     //     bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
     //     Joueur J1, J2;
     //     initFenetre();
