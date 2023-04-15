@@ -75,8 +75,8 @@ struct Grille
 	int y;
 	int width = 400;
 	int height = 400;
-	int cellWidth = width / 10;
-	int cellHeight = height / 10;
+	int cellWidth = width / CASES;
+	int cellHeight = height / CASES;
 	TAB_GRILLE tabGrille;
 	int nbBateaux;
 	TAB_BATEAUX tabBateaux;
