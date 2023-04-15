@@ -322,18 +322,52 @@ int main()
 {
     debugLevel = 2;
     initFenetre();
+    // Grille 1
     Bateau B1;
-    initBateau(B1, 1, 0, 0, PORTE_AVION, VERT_DIR);
-    Grille G;
-    TAB_GRILLE TG;
-    TAB_BATEAUX TB = {B1};
-    initTabGrille(TG);
+    initBateau(B1, 10, 0, 0, TORPILLEUR, VERT_DIR); // 0, 0 and ignores direction
+    Grille G1;
+    TAB_BATEAUX TB1 = {B1};
+    initGrille(G1, 200, 200, 5, TB1);
+    // Grille 2
+    Bateau B2;
+    initBateau(B2, 2, 4, 3, PORTE_AVION, HORIZ_DIR); // 4, 3
+    Grille G2;
+    TAB_BATEAUX TB2 = {B2};
+    initGrille(G2, 800, 200, 5, TB2);
+    setbkcolor(LIGHTGRAY);
+    cleardevice();
+
+    /*Test dessinerBouton
+    Bouton button;
+    button.x1=100;
+    button.x2=100;
+    button.y1=100;
+    button.y2=100;
+    button.couleur=GREEN;
+    button.texte="Suivant";
+    dessinerBouton(button);*/
+
+    // // Test dessinerGrille
+    dessinerGrille(G1);
+    dessinerGrille(G2);
+    dessinerBateau(B1, G1);
+    dessinerBateau(B2, G2);
+    cout << "Bateau 1 : " << B1.x << " " << B1.y << " " << B1.orientation << endl;
+
+    // Test tirer
+    int x, y;
+    tirerJoueur(x, y, G1);
+    dessinerCase(x, y, G1);
+
+    /*initTabGrille(TG);
     initGrille(G, 0, 0, TG, 1,TB);
     Joueur J;
     initJoueur(J, "Joueur 1", G);
     dessinerGrille(J.grille);
-    dessinerBateau(J.grille.tabBateaux[0], J.grille);
+    dessinerBateau(J.grille.tabBateaux[0], J.grille);*/
+
     getch();
+
     //     bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
     //     Joueur J1, J2;
     //     initFenetre();
