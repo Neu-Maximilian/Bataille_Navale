@@ -214,12 +214,9 @@ void menu(bool &choixMultiJoueur, bool &choixDifficile, bool &choixTirSalves, bo
  * Initialise le bateau.
  * \param B un bateau
  * \param id l'id du bateau
- * \param x la coordonn�e x du bateau
- * \param y la coordonn�e y du bateau
  * \param size la taille du bateau
- * \param orientation l'orientation du bateau
  */
-void initBateau(Bateau &B, int id, int x, int y, int size, int orientation);
+void initBateau(Bateau &B, int id, int size);
 
 /**
  * Initialise le tableau de la grille.
