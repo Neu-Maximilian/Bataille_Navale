@@ -49,6 +49,8 @@ void dessinerGrille(const Grille &G) // Works + TODO
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
     for (int i = 0; i < CASES; i++)
     {
+        line(G.x, G.y + i * G.cellHeight, G.x + G.width, G.y + i * G.cellHeight);
+        line(G.x + i * G.cellWidth, G.y, G.x + i * G.cellWidth, G.y + G.height);
         outtextxy(G.x + i * G.cellWidth + G.cellWidth / 2 - 5, G.y - G.cellHeight / 2, "A");
         outtextxy(G.x - G.cellWidth / 2, G.y + i * G.cellHeight + G.cellHeight / 2 - 5, "1");
     }
@@ -64,29 +66,29 @@ void dessinerGrille(const Grille &G) // Works + TODO
     verbose("Grille dessinee" + to_string(G.x) + " " + to_string(G.y) + " " + to_string(G.width) + " " + to_string(G.height) + " " + to_string(G.cellWidth) + " " + to_string(G.cellHeight), DEBUG);
 }
 
-void dessinerBateau(const Bateau &B, const Grille &G) // Works
-{
-    setcolor(DARKGRAY);
-    setfillstyle(SOLID_FILL, DARKGRAY);
-    if (B.orientation == HORIZ_DIR)
-    {
-        bar(G.x + B.x * G.cellWidth + 1, G.y + B.y * G.cellHeight + 1, G.x + (B.x + B.taille) * G.cellWidth, G.y + (B.y + 1) * G.cellHeight);
-    }
-    else if (B.orientation == VERT_DIR)
-    {
-        bar(G.x + B.x * G.cellWidth + 1, G.y + B.y * G.cellHeight + 1, G.x + (B.x + 1) * G.cellWidth, G.y + (B.y + B.taille) * G.cellHeight);
-    }
-    verbose("Bateau dessine" + to_string(B.x) + " " + to_string(B.y) + " " + to_string(B.taille) + " " + to_string(B.orientation), DEBUG);
-}
+// void dessinerBateau(const Bateau &B, const Grille &G) // Works
+// {
+//     setcolor(DARKGRAY);
+//     setfillstyle(SOLID_FILL, DARKGRAY);
+//     if (B.orientation == HORIZ_DIR)
+//     {
+//         bar(G.x + B.x * G.cellWidth + 1, G.y + B.y * G.cellHeight + 1, G.x + (B.x + B.taille) * G.cellWidth, G.y + (B.y + 1) * G.cellHeight);
+//     }
+//     else if (B.orientation == VERT_DIR)
+//     {
+//         bar(G.x + B.x * G.cellWidth + 1, G.y + B.y * G.cellHeight + 1, G.x + (B.x + 1) * G.cellWidth, G.y + (B.y + B.taille) * G.cellHeight);
+//     }
+//     verbose("Bateau dessine" + to_string(B.x) + " " + to_string(B.y) + " " + to_string(B.taille) + " " + to_string(B.orientation), DEBUG);
+// }
 
-bool placerBateau(Bateau &B, Grille &G) // To test
+bool placerBateau(Bateau &B, Grille &G) // NOT Working
 {
     bool libre = true;
-    bool estVertical = B.orientation == VERT_DIR;
-    bool estHorizontal = B.orientation == HORIZ_DIR;
+    bool dirHorizontal = B.orientation == HORIZ_DIR;
+    bool dirVertical = B.orientation == VERT_DIR;
     for (int i = 0; i < B.taille; i++)
     {
-        if (G.tabGrille[B.x + i * estHorizontal][B.y + i * estVertical] != VIDE)
+        if (G.tabGrille[B.x + i * dirVertical][B.y + i * dirHorizontal] != VIDE)
         {
             libre = false;
         }
@@ -95,11 +97,11 @@ bool placerBateau(Bateau &B, Grille &G) // To test
     {
         for (int i = 0; i < B.taille; i++)
         {
-            G.tabGrille[B.x + i * estHorizontal][B.y + i * estVertical] = B.id;
+            G.tabGrille[B.x + i * dirVertical][B.y + i * dirHorizontal] = B.id;
         }
-        for (int i = -1; i <= B.taille * estHorizontal + 1; i++)
+        for (int i = -1; i <= B.taille * dirVertical + 1; i++)
         {
-            for (int j = -1; j <= B.taille * estVertical + 1; j++)
+            for (int j = -1; j <= B.taille * dirHorizontal + 1; j++)
             {
                 if (G.tabGrille[B.x + i][B.y + j] == VIDE && (B.x + i >= 0 && B.x + i < CASES) || (B.y + j >= 0 && B.y + j < CASES))
                 {
@@ -107,13 +109,13 @@ bool placerBateau(Bateau &B, Grille &G) // To test
                 }
             }
         }
-        if (G.tabGrille[B.x + B.taille * estHorizontal][B.y + B.taille * estVertical] == VIDE && B.x + B.taille * estHorizontal < CASES)
+        if (G.tabGrille[B.x + B.taille * dirVertical][B.y + B.taille * dirHorizontal] == VIDE && B.x + B.taille * dirVertical < CASES)
         {
-            G.tabGrille[B.x + B.taille * estHorizontal][B.y + B.taille * estVertical] = CEV_INTACTE;
+            G.tabGrille[B.x + B.taille * dirVertical][B.y + B.taille * dirHorizontal] = CEV_INTACTE;
         }
-        if (G.tabGrille[B.x - 1 * estHorizontal][B.y - 1 * estVertical] == VIDE && B.x - 1 >= 0 && B.y - 1 >= 0)
+        if (G.tabGrille[B.x - 1 * dirVertical][B.y - 1 * dirHorizontal] == VIDE && B.x - 1 >= 0 && B.y - 1 >= 0)
         {
-            G.tabGrille[B.x - 1 * estHorizontal][B.y - 1 * estVertical] = CEV_INTACTE;
+            G.tabGrille[B.x - 1 * dirVertical][B.y - 1 * dirHorizontal] = CEV_INTACTE;
         }
     }
     return libre;
@@ -130,7 +132,6 @@ void placerBateauxAleat(TAB_BATEAUX &T, Grille &G) // Works
             T[i].orientation = aleat(0, 1);
             verbose("Bateau " + to_string(i) + " : " + to_string(T[i].x) + " " + to_string(T[i].y) + " " + to_string(T[i].orientation), DEBUG);
         } while (!placerBateau(T[i], G));
-        dessinerBateau(T[i], G);
     }
 }
 
@@ -148,7 +149,6 @@ void placerBateauxJoueur(TAB_BATEAUX &T, Grille &G) // To test
             T[i].orientation = (p1.x < p2.x) ? HORIZ_DIR : VERT_DIR;
             verbose("Bateau " + to_string(i) + " : " + to_string(T[i].x) + " " + to_string(T[i].y) + " " + to_string(T[i].orientation), DEBUG);
         } while (!placerBateau(T[i], G));
-        dessinerBateau(T[i], G);
     }
 }
 
@@ -187,6 +187,17 @@ void dessinerCase(int x, int y, const Grille &G) // Works
     case COULE:
         setcolor(RED);
         setfillstyle(SOLID_FILL, RED);
+        bar(G.x + x * G.cellWidth + 1, G.y + y * G.cellHeight + 1, G.x + (x + 1) * G.cellWidth, G.y + (y + 1) * G.cellHeight);
+        break;
+
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        setcolor(LIGHTGRAY);
+        setfillstyle(SOLID_FILL, LIGHTGRAY);
         bar(G.x + x * G.cellWidth + 1, G.y + y * G.cellHeight + 1, G.x + (x + 1) * G.cellWidth, G.y + (y + 1) * G.cellHeight);
         break;
 
@@ -365,31 +376,39 @@ int main()
     // Test dessinerGrille
     dessinerGrille(G1);
     dessinerGrille(G2);
-    dessinerBateau(G1.tabBateaux[0], G1);
-    dessinerBateau(G1.tabBateaux[1], G1);
 
     // Test placerBateau
     // placerBateauxJoueur(G1.tabBateaux, G1);
     placerBateauxAleat(G2.tabBateaux, G2);
+    
+    for (int i = 0; i < CASES; i++)
+    {
+        for (int j = 0; j < CASES; j++)
+        {
+            dessinerCase(i, j, G2);
+        }
+    }
+
 
     // // Test dessinerCase
     G1.tabGrille = {{{COULE, CEV_INTACTE, CEV_TOUCHE, TOUCHE, RATE, VIDE, VIDE, VIDE, VIDE, VIDE},
                      {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+                     {VIDE, 1, VIDE, VIDE, VIDE, VIDE, 3, 3, 3, 3},
+                     {VIDE, 1, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+                     {VIDE, 1, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
                      {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
                      {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
                      {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
                      {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
                      {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE}}};
-    dessinerCase(0, 0, G1);
-    dessinerCase(0, 1, G1);
-    dessinerCase(0, 2, G1);
-    dessinerCase(0, 3, G1);
-    dessinerCase(0, 4, G1);
-    dessinerCase(0, 5, G1);
-    dessinerCase(0, 6, G1);
+    
+    for (int i = 0; i < CASES; i++)
+    {
+        for (int j = 0; j < CASES; j++)
+        {
+            dessinerCase(i, j, G1);
+        }
+    }
 
     // // Test tirer
     // int x, y;
