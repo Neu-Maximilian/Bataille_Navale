@@ -47,6 +47,7 @@ struct Bouton
 {
 	int x1, y1, x2, y2;
 	int couleur;
+	int texte_taille;
 	const char *texte;
 };
 
@@ -253,9 +254,8 @@ void initJoueur(Joueur &J, string nom, Grille grille, int nbBateaux, TAB_BATEAUX
  * \param choixTirSalves true si le mode tir salves est active, false sinon
  * \param choixCaseEnVue true si le mode case en vue est active, false sinon
  * \param choix6Bateaux true si le mode 6 bateaux est active, false sinon
- * \return true si le J1 a gagne, false sinon
  */
-bool jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux);
+void jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux);
 
 /**
  * Écran de fin de partie.

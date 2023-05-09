@@ -35,8 +35,8 @@ void dessinerBouton(const Bouton &B) // Works
     bar(B.x1, B.y1, B.x2, B.y2);
     setbkcolor(B.couleur);
     setcolor(WHITE);
-    settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-    outtextxy(B.x1 + 10, B.y1 + 10, B.texte);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, B.texte_taille);
+    outtextxy(B.x1 + B.x2/(10+B.texte_taille), B.y1 + B.y2/(10+B.texte_taille), B.texte);
     verbose("Bouton dessine" + to_string(B.x1) + " " + to_string(B.y1) + " " + to_string(B.x2) + " " + to_string(B.y2) + " " + to_string(B.couleur) + " " + B.texte, DEBUG);
 }
 
@@ -66,56 +66,61 @@ void dessinerGrille(const Grille &G) // Works + TODO
     verbose("Grille dessinee" + to_string(G.x) + " " + to_string(G.y) + " " + to_string(G.width) + " " + to_string(G.height) + " " + to_string(G.cellWidth) + " " + to_string(G.cellHeight), DEBUG);
 }
 
-// void dessinerBateau(const Bateau &B, const Grille &G) // Works
-// {
-//     setcolor(DARKGRAY);
-//     setfillstyle(SOLID_FILL, DARKGRAY);
-//     if (B.orientation == HORIZ_DIR)
-//     {
-//         bar(G.x + B.x * G.cellWidth + 1, G.y + B.y * G.cellHeight + 1, G.x + (B.x + B.taille) * G.cellWidth, G.y + (B.y + 1) * G.cellHeight);
-//     }
-//     else if (B.orientation == VERT_DIR)
-//     {
-//         bar(G.x + B.x * G.cellWidth + 1, G.y + B.y * G.cellHeight + 1, G.x + (B.x + 1) * G.cellWidth, G.y + (B.y + B.taille) * G.cellHeight);
-//     }
-//     verbose("Bateau dessine" + to_string(B.x) + " " + to_string(B.y) + " " + to_string(B.taille) + " " + to_string(B.orientation), DEBUG);
-// }
-
 bool placerBateau(Bateau &B, Grille &G) // NOT Working
 {
     bool libre = true;
-    bool dirHorizontal = B.orientation == HORIZ_DIR;
-    bool dirVertical = B.orientation == VERT_DIR;
-    for (int i = 0; i < B.taille; i++)
-    {
-        if (G.tabGrille[B.x + i * dirVertical][B.y + i * dirHorizontal] != VIDE)
-        {
-            libre = false;
-        }
-    }
-    if (libre)
+    if (B.orientation == HORIZ_DIR)
     {
         for (int i = 0; i < B.taille; i++)
         {
-            G.tabGrille[B.x + i * dirVertical][B.y + i * dirHorizontal] = B.id;
-        }
-        for (int i = -1; i <= B.taille * dirVertical + 1; i++)
-        {
-            for (int j = -1; j <= B.taille * dirHorizontal + 1; j++)
+            if (G.tabGrille[B.x + i][B.y] != VIDE)
             {
-                if (G.tabGrille[B.x + i][B.y + j] == VIDE && (B.x + i >= 0 && B.x + i < CASES) || (B.y + j >= 0 && B.y + j < CASES))
+                libre = false;
+            }
+        }
+        if (libre)
+        {
+            for (int i = 0; i < B.taille; i++)
+            {
+                G.tabGrille[B.x + i][B.y] = B.id;
+            }
+            for (int i = -1; i < B.taille + 1; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
+                    if (B.x + i >= 0 && B.x + i < CASES && B.y + j >= 0 && B.y + j < CASES && G.tabGrille[B.x + i][B.y + j] != B.id)
+                    {
+                        G.tabGrille[B.x + i][B.y + j] = CEV_INTACTE;
+                    }
+                }
+            }
+        }
+    }
+    else if (B.orientation == VERT_DIR)
+    {
+        for (int i = 0; i < B.taille; i++)
+        {
+            if (G.tabGrille[B.x][B.y + i] != VIDE)
+            {
+                libre = false;
+            }
+        }
+        if (libre)
+        {
+            for (int i = 0; i < B.taille; i++)
+            {
+                G.tabGrille[B.x][B.y + i] = B.id;
+            }
+        }
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < B.taille + 1; j++)
+            {
+                if (B.x + i >= 0 && B.x + i < CASES && B.y + j >= 0 && B.y + j < CASES && G.tabGrille[B.x + i][B.y + j] != B.id)
                 {
                     G.tabGrille[B.x + i][B.y + j] = CEV_INTACTE;
                 }
             }
-        }
-        if (G.tabGrille[B.x + B.taille * dirVertical][B.y + B.taille * dirHorizontal] == VIDE && B.x + B.taille * dirVertical < CASES)
-        {
-            G.tabGrille[B.x + B.taille * dirVertical][B.y + B.taille * dirHorizontal] = CEV_INTACTE;
-        }
-        if (G.tabGrille[B.x - 1 * dirVertical][B.y - 1 * dirHorizontal] == VIDE && B.x - 1 >= 0 && B.y - 1 >= 0)
-        {
-            G.tabGrille[B.x - 1 * dirVertical][B.y - 1 * dirHorizontal] = CEV_INTACTE;
         }
     }
     return libre;
@@ -164,7 +169,7 @@ void dessinerCase(int x, int y, const Grille &G) // Works
         break;
 
     case CEV_TOUCHE:
-        setcolor(WHITE);
+        setcolor(GREEN);
         setbkcolor(BLUE);
         settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
         settextjustify(CENTER_TEXT, CENTER_TEXT);
@@ -280,16 +285,22 @@ void initFenetre() // Works
     cleardevice();
 }
 
-void initBouton(Bouton &B, int x1, int y1, int x2, int y2, int couleur, const char *texte) // Works
+void initBouton(Bouton &B, int x1, int y1, int x2, int y2, int couleur,int taille_texte, const char *texte) // Works
 {
-    B = {x1, y1, x2, y2, couleur, texte};
+    B = {x1, y1, x2, y2, couleur, taille_texte, texte};
 }
 
 void menu(bool &choixMultiJoueur, bool &choixDifficile, bool &choixTirSalves, bool &choixCaseEnVue, bool &choix6Bateaux) // TODO
 {
     int x, y;
     Bouton boutonMultiJoueur, boutonSolo, boutonFacile, boutonDifficile, boutonTirSalves, boutonTirParCase, boutonCaseEnVue, bouton6Bateaux, bouton5Bateaux, boutonSuivant;
-    // TODO
+    initBouton(boutonMultiJoueur, WIDTH/2-230, HEIGHT/2, WIDTH/2+230, HEIGHT/2, BLUE, 4 , "Multijoueur");
+    dessinerBouton(boutonMultiJoueur);
+    initBouton(boutonSolo, WIDTH/2-230, HEIGHT/2, WIDTH/2+230, HEIGHT/2, CYAN, 4 , "Solo");
+    dessinerBouton(boutonSolo);
+    initBouton(boutonSuivant, WIDTH/2-230, HEIGHT/2, WIDTH/2+230, HEIGHT/2, GREEN, 4 , "Suivant");
+    dessinerBouton(boutonSuivant);
+
 }
 
 void initBateau(Bateau &B, int id, int size) // Works
@@ -324,7 +335,12 @@ void initJoueur(Joueur &J, string nom, Grille grille) // Works
     J.grille = grille;
 }
 
-bool jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux) // TODO
+bool jeu_fini(Joueur &J1, Joueur &J2) // TODO
+{
+
+}
+
+void jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux) // TODO
 {
     // TODO
 }
@@ -363,52 +379,45 @@ int main()
     setbkcolor(LIGHTGRAY);
     cleardevice();
 
-    /*Test dessinerBouton
-    Bouton button;
-    button.x1=100;
-    button.x2=100;
-    button.y1=100;
-    button.y2=100;
-    button.couleur=GREEN;
-    button.texte="Suivant";
-    dessinerBouton(button);*/
+    bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
+    menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
 
     // Test dessinerGrille
-    dessinerGrille(G1);
-    dessinerGrille(G2);
+    // dessinerGrille(G1);
+    // dessinerGrille(G2);
 
     // Test placerBateau
     // placerBateauxJoueur(G1.tabBateaux, G1);
-    placerBateauxAleat(G2.tabBateaux, G2);
+    // placerBateauxAleat(G2.tabBateaux, G2);
     
-    for (int i = 0; i < CASES; i++)
-    {
-        for (int j = 0; j < CASES; j++)
-        {
-            dessinerCase(i, j, G2);
-        }
-    }
+    // for (int i = 0; i < CASES; i++)
+    // {
+    //     for (int j = 0; j < CASES; j++)
+    //     {
+    //         dessinerCase(i, j, G2);
+    //     }
+    // }
 
 
     // // Test dessinerCase
-    G1.tabGrille = {{{COULE, CEV_INTACTE, CEV_TOUCHE, TOUCHE, RATE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, 1, VIDE, VIDE, VIDE, VIDE, 3, 3, 3, 3},
-                     {VIDE, 1, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, 1, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
-                     {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE}}};
+    // G1.tabGrille = {{{COULE, CEV_INTACTE, CEV_TOUCHE, TOUCHE, RATE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, 1, VIDE, VIDE, VIDE, VIDE, 3, 3, 3, 3},
+    //                  {VIDE, 1, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, 1, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE},
+    //                  {VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE, VIDE}}};
     
-    for (int i = 0; i < CASES; i++)
-    {
-        for (int j = 0; j < CASES; j++)
-        {
-            dessinerCase(i, j, G1);
-        }
-    }
+    // for (int i = 0; i < CASES; i++)
+    // {
+    //     for (int j = 0; j < CASES; j++)
+    //     {
+    //         dessinerCase(i, j, G1);
+    //     }
+    // }
 
     // // Test tirer
     // int x, y;
