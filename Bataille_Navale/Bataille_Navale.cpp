@@ -280,47 +280,101 @@ void dessinerCase(int x, int y, const Grille &G) // Works
     }
 }
 
-int tirer(int x, int y, Grille &G) // To test
+void dessinerBateauCoule(const Bateau &B, const Grille &G) //dessine un bateau
+{
+	    setcolor(RED);
+	    setfillstyle(SOLID_FILL, RED);
+		if (B.orientation == 0)
+		{
+			bar(B.x*40+G.x, B.y*40+G.y, B.x*40+G.x+B.taille*40, B.y*40+G.y+40);
+		}
+		else
+		{
+			bar(B.x*40+G.x, B.y*40+G.y, B.x*40+G.x+40, B.y*40+G.y+B.taille*40);
+		}
+}
+
+int tirer(const int &x, const int &y, Grille &G) // To test
 {
     int id = G.tabGrille[x][y];
+    cout<<G.tabGrille[x][y];
     if (id > 0)
     {
         G.tabGrille[x][y] = TOUCHE;
-        G.tabBateaux[id].state = TOUCHE;
-        bool coule = true;
-        bool estVertical = G.tabBateaux[id].orientation == VERT_DIR;
-        bool estHorizontal = G.tabBateaux[id].orientation == HORIZ_DIR;
-        for (int i = 0; i < G.tabBateaux[id].taille; i++)
+        G.tabBateaux[id-1].state = TOUCHE;
+        bool bateau_coule = true;
+        int i=0;
+        int taille=G.tabBateaux[id-1].taille;
+        int x_bateau=G.tabBateaux[id-1].x;
+        int y_bateau=G.tabBateaux[id-1].y;
+        if(G.tabBateaux[id-1].orientation == 0) //si le bateau est horizontal
         {
-            if (G.tabGrille[G.tabBateaux[id].x + i * estHorizontal][G.tabBateaux[id].y + i * estVertical] != TOUCHE)
+            while(i<taille && bateau_coule == true)
             {
-                coule = false;
+                if(G.tabGrille[x_bateau+i][y_bateau] != TOUCHE)
+                {
+                    cout<<G.tabGrille[x_bateau+i][y_bateau];
+                    bateau_coule=false;
+                }
+                i++;
             }
         }
-        if (coule)
+        else //si bateau vertical
         {
-            G.tabBateaux[id].state = COULE;
+            while(i<taille && bateau_coule == true)
+            {
+                if(G.tabGrille[x_bateau][y_bateau+i] != TOUCHE)
+                {
+                    bateau_coule=false;
+                }
+                i++;
+            }
+        }
+        if(bateau_coule)
+        {
+            G.tabBateaux[id-1].state=COULE;
+            if(G.tabBateaux[id-1].orientation == 0)
+            {
+                for(int i=x; i<taille; i++)
+                {
+                    G.tabGrille[i][y] = COULE;
+                }
+            }
+            else
+            {
+                for(int i=y; i<taille; i++)
+                {
+                    G.tabGrille[x][i] = COULE;
+                }
+            }
+            dessinerBateauCoule(G.tabBateaux[id-1], G);
+        }
+        else
+        {
+            dessinerCase(x,y,G);
         }
     }
     else if (id == VIDE)
     {
         G.tabGrille[x][y] = RATE;
+        dessinerCase(x,y,G);
     }
     else if (id == CEV_INTACTE)
     {
         G.tabGrille[x][y] = CEV_TOUCHE;
+        dessinerCase(x,y,G);
     }
     return id;
 }
 
-void tirerJoueur(int &x, int &y, Grille &G) // To test
+void tirerJoueur(int &x, int &y, Grille &G)
 {
     do
     {
         lireSouris(x, y);
         x = (int)(x - G.x) / G.cellWidth;
         y = (int)(y - G.y) / G.cellHeight;
-    } while (x < 0 || x >= CASES || y < 0 || y >= CASES || !tirer(x, y, G) > -1);
+    }while (x < 0 || x >= CASES || y < 0 || y >= CASES || tirer(x,y,G) < -1);
 }
 
 void tirerOrdi(int &x, int &y, bool modeDifficile, Grille &G) // TODO
@@ -493,6 +547,15 @@ int main()
     // int x, y;
     // tirerJoueur(x, y, G1);
     // dessinerCase(x, y, G1);
+    //Tieu
+    //Test tirer
+    int x,y;
+    for(int i=0; i<10; i++)
+    {
+        tirerJoueur(x,y,G1);
+    }
+
+    //Fin tieu
 
     /*initTabGrille(TG);
     initGrille(G, 0, 0, TG, 1,TB);
