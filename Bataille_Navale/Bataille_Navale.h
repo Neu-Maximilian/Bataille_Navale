@@ -7,6 +7,9 @@
 #define WIDTH 1280
 #define CASES 10
 #define NB_BATEAUX_MAX 7
+#define NB_BOUTONS_MAX 10
+
+
 
 using namespace std;
 
@@ -32,12 +35,7 @@ enum bateau_type
 	PORTE_AVION = 5,
 	CROISEUR = 4,
 	CONTRE_TORPILLEUR = 3,
-	TORPILLEUR = 2
-};
-
-struct Point
-{
-	int x, y;
+	TORPILLEUR = 2,
 };
 
 /**
@@ -171,14 +169,15 @@ void dessinerCase(int x, int y, const Grille &G);
  * \param y indice de la colone de la case
  * \return le statut du tir (-1 = case en vue, -2 = rate, -3 = touche, -4 = coule)
  */
-int tirer(Grille &G, int x, int y);
+
+int tirer(const int &x, const int &y, Grille &G, const bool &choixCaseEnVue);
 
 /**
  * \param G une grille
  * \param x coordonn�e x de la souris
  * \param y coordonn�e y de la souris
  */
-void tirerJoueur(int &x, int &y, Grille &G);
+void tirerJoueur(int &x, int &y, Grille &G, const bool &choixCaseEnVue, const bool &choixTirSalves);
 
 /**
  * \param G une grille
@@ -186,6 +185,7 @@ void tirerJoueur(int &x, int &y, Grille &G);
  * \param y coordonn�e y de la souris
  * \param modeDifficile true si le mode difficile est active, false sinon
  */
+
 void tirerOrdi(int &x, int &y, bool modeDifficile, Grille &G);
 
 // Initialisation du jeu
@@ -205,11 +205,13 @@ void initFenetre();
  * \param couleur la couleur du bouton
  * \param texte le texte a afficher dans le bouton
  */
-void initBouton(Bouton &B, int x1, int y1, int x2, int y2, int couleur, const char *texte);
+void initBouton(Bouton &B, int x1, int y1, int x2, int y2, int couleur, int tx1, int ty1, int taille_texte, const char *texte);
 
 /**
  * Affiche le menu.
  */
+
+
 void menu(bool &choixMultiJoueur, bool &choixDifficile, bool &choixTirSalves, bool &choixCaseEnVue, bool &choix6Bateaux);
 
 /**
