@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 int debugLevel = 0;
 
 void verbose(string message, int level)
@@ -43,7 +42,7 @@ void dessinerBateauCoule(const Bateau &B, const Grille &G) // ok
     }
 }
 
-//ajoute ou modifie
+// ajoute ou modifie
 
 void dessinerBouton(const Bouton &B) // ok
 {
@@ -66,7 +65,7 @@ void dessinerContour(const Bouton &B, int Couleur) // ok
     verbose("Contour dessine" + to_string(B.x1) + " " + to_string(B.y1) + " " + to_string(B.x2) + " " + to_string(B.y2) + " " + to_string(B.couleur), DEBUG);
 }
 
-void dessinerCroix(const Bouton &B, int Couleur) //ok
+void dessinerCroix(const Bouton &B, int Couleur) // ok
 {
     setcolor(Couleur);
     setbkcolor(Couleur);
@@ -96,7 +95,7 @@ void dessinerGrille(const Grille &G) // ok
     outtextxy(G.x + 1 * G.cellWidth + G.cellWidth / 2 - 7, G.y - G.cellHeight / 2 - 8, "B");
     outtextxy(G.x - G.cellWidth / 2 - 8, G.y + 1 * G.cellHeight + G.cellHeight / 2 - 7, "2");
     outtextxy(G.x + 2 * G.cellWidth + G.cellWidth / 2 - 7, G.y - G.cellHeight / 2 - 8, "C");
-    outtextxy(G.x - G.cellWidth / 2 - 8, G.y + 2* G.cellHeight + G.cellHeight / 2 - 7, "3");
+    outtextxy(G.x - G.cellWidth / 2 - 8, G.y + 2 * G.cellHeight + G.cellHeight / 2 - 7, "3");
     outtextxy(G.x + 3 * G.cellWidth + G.cellWidth / 2 - 7, G.y - G.cellHeight / 2 - 8, "D");
     outtextxy(G.x - G.cellWidth / 2 - 8, G.y + 3 * G.cellHeight + G.cellHeight / 2 - 7, "4");
     outtextxy(G.x + 4 * G.cellWidth + G.cellWidth / 2 - 7, G.y - G.cellHeight / 2 - 8, "E");
@@ -121,26 +120,25 @@ void dessinerGrille(const Grille &G) // ok
     {
         line(G.x, G.y + i * G.cellHeight, G.x + G.width, G.y + i * G.cellHeight);
         line(G.x + i * G.cellWidth, G.y, G.x + i * G.cellWidth, G.y + G.height);
-
     }
 
     setcolor(LIGHTGRAY);
     for (int i = 0; i < CASES; i++)
     {
-        line(G.x+i*G.cellHeight, G.y-40, G.x+i*G.cellHeight, G.y);
-        line(G.x-40, G.y + i*G.cellWidth, G.x, G.y+i*G.cellWidth);
+        line(G.x + i * G.cellHeight, G.y - 40, G.x + i * G.cellHeight, G.y);
+        line(G.x - 40, G.y + i * G.cellWidth, G.x, G.y + i * G.cellWidth);
     }
 
     verbose("Grille dessinee" + to_string(G.x) + " " + to_string(G.y) + " " + to_string(G.width) + " " + to_string(G.height) + " " + to_string(G.cellWidth) + " " + to_string(G.cellHeight), DEBUG);
 }
 
-void afficherCacheEcran(const int &numero_joueur) //ok
+void afficherCacheEcran(const int &numero_joueur) // ok
 {
     setcolor(DARKGRAY);
     setbkcolor(LIGHTGRAY);
     cleardevice();
     settextstyle(GOTHIC_FONT, HORIZ_DIR, 6);
-    if(numero_joueur==1)
+    if (numero_joueur == 1)
     {
         outtextxy(345, 310, "Tour du joueur 1");
     }
@@ -150,48 +148,48 @@ void afficherCacheEcran(const int &numero_joueur) //ok
     }
 }
 
-void afficherDeuxGrilles(Joueur &Joueur_POV, Joueur &J2) //ok
+void afficherDeuxGrilles(Joueur &Joueur_POV, Joueur &J2) // ok
 {
     setbkcolor(LIGHTGRAY);
     cleardevice();
     dessinerGrille(J2.grille);
     dessinerGrille(Joueur_POV.grille);
     int laCase;
-    for(int i=0; i<CASES; i++)
+    for (int i = 0; i < CASES; i++)
     {
-        for(int k=0; k<CASES; k++)
+        for (int k = 0; k < CASES; k++)
         {
-            laCase=Joueur_POV.grille.tabGrille[i][k];
-            if(laCase != VIDE && laCase != CEV_INTACTE || (1 <= laCase && laCase <= Joueur_POV.grille.nbBateaux))
+            laCase = Joueur_POV.grille.tabGrille[i][k];
+            if (laCase != VIDE && laCase != CEV_INTACTE || (1 <= laCase && laCase <= Joueur_POV.grille.nbBateaux))
             {
                 dessinerCase(i, k, Joueur_POV.grille);
             }
         }
-        for(int i=0; i<Joueur_POV.grille.nbBateaux; i++)
+        for (int i = 0; i < Joueur_POV.grille.nbBateaux; i++)
         {
-            if(Joueur_POV.grille.tabBateaux[i].state==COULE)
+            if (Joueur_POV.grille.tabBateaux[i].state == COULE)
             {
                 dessinerBateauCoule(Joueur_POV.grille.tabBateaux[i], Joueur_POV.grille);
             }
         }
     }
 
-    for(int i=0; i<CASES; i++)
+    for (int i = 0; i < CASES; i++)
     {
-        for(int k=0; k<CASES; k++)
+        for (int k = 0; k < CASES; k++)
         {
-            laCase=J2.grille.tabGrille[i][k];
-            if(!(1<= laCase && laCase <= J2.grille.nbBateaux))
+            laCase = J2.grille.tabGrille[i][k];
+            if (!(1 <= laCase && laCase <= J2.grille.nbBateaux))
             {
-                if(laCase != VIDE && laCase != CEV_INTACTE)
+                if (laCase != VIDE && laCase != CEV_INTACTE)
                 {
                     dessinerCase(i, k, J2.grille);
                 }
             }
         }
-        for(int i=0; i<J2.grille.nbBateaux; i++)
+        for (int i = 0; i < J2.grille.nbBateaux; i++)
         {
-            if(J2.grille.tabBateaux[i].state==COULE)
+            if (J2.grille.tabBateaux[i].state == COULE)
             {
                 dessinerBateauCoule(J2.grille.tabBateaux[i], J2.grille);
             }
@@ -200,11 +198,11 @@ void afficherDeuxGrilles(Joueur &Joueur_POV, Joueur &J2) //ok
     setcolor(DARKGRAY);
     setbkcolor(LIGHTGRAY);
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-    outtextxy(Joueur_POV.grille.x + Joueur_POV.grille.height/2-170, Joueur_POV.grille.y + Joueur_POV.grille.height+5, "Votre grille de jeu");
-    outtextxy(J2.grille.x + J2.grille.height/2-195, J2.grille.y + J2.grille.height+5, "Grille de l'adversaire");
+    outtextxy(Joueur_POV.grille.x + Joueur_POV.grille.height / 2 - 170, Joueur_POV.grille.y + Joueur_POV.grille.height + 5, "Votre grille de jeu");
+    outtextxy(J2.grille.x + J2.grille.height / 2 - 195, J2.grille.y + J2.grille.height + 5, "Grille de l'adversaire");
 }
 
-//fin ajoute ou modifie
+// fin ajoute ou modifie
 
 void modifCEV(const Bateau &B, Grille &G)
 {
@@ -261,7 +259,7 @@ bool placerBateau(Bateau &B, Grille &G) // NOT Working
     {
         for (int i = 0; i < B.taille; i++)
         {
-            if (G.tabGrille[B.x + i][B.y] != VIDE)
+            if (G.tabGrille[B.x + i][B.y] != VIDE || B.x + i >= CASES || B.x + i < 0)
             {
                 libre = false;
             }
@@ -279,7 +277,7 @@ bool placerBateau(Bateau &B, Grille &G) // NOT Working
     {
         for (int i = 0; i < B.taille; i++)
         {
-            if (G.tabGrille[B.x][B.y + i] != VIDE)
+            if (G.tabGrille[B.x][B.y + i] != VIDE || B.y + i >= CASES || B.y + i < 0)
             {
                 libre = false;
             }
@@ -302,10 +300,9 @@ void placerBateauxAleat(TAB_BATEAUX &T, Grille &G) // ça ne marche pas toujours
     {
         do
         {
-            T[i].x = aleat(0, CASES - 1 - T[i].taille);
-            T[i].y = aleat(0, CASES - 1 - T[i].taille);
+            T[i].x = aleat(0, CASES - 1);
+            T[i].y = aleat(0, CASES - 1);
             T[i].orientation = aleat(0, 1);
-            verbose("Bateau " + to_string(i) + " : " + to_string(T[i].x) + " " + to_string(T[i].y) + " " + to_string(T[i].orientation), DEBUG);
         } while (!placerBateau(T[i], G));
     }
     for (int i = 0; i < CASES; i++)
@@ -373,7 +370,7 @@ void dessinerCase(int x, int y, const Grille &G) // ok
         setcolor(GREEN);
         setbkcolor(BLUE);
         settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-        outtextxy(G.x + x * G.cellWidth +  12, G.y + y * G.cellHeight + 13, "V");
+        outtextxy(G.x + x * G.cellWidth + 12, G.y + y * G.cellHeight + 13, "V");
         break;
 
     case RATE:
@@ -411,14 +408,15 @@ void dessinerCase(int x, int y, const Grille &G) // ok
     }
 }
 
-
 int tirer(const int &x, const int &y, Grille &G, const bool &choixCaseEnVue) // ok
 {
+    if (x < 0 || x >= CASES || y < 0 || y >= CASES)
+        return RATE;
     int id = G.tabGrille[x][y];
     cout << G.tabGrille[x][y];
     setcolor(LIGHTGRAY);
     setfillstyle(SOLID_FILL, LIGHTGRAY);
-    bar(WIDTH/2 - 80, G.y + G.height/2 - 50, WIDTH/2 + 70, G.y + G.height/2 + 50);
+    bar(WIDTH / 2 - 80, G.y + G.height / 2 - 50, WIDTH / 2 + 70, G.y + G.height / 2 + 50);
     if (id > 0)
     {
         G.tabGrille[x][y] = TOUCHE;
@@ -472,7 +470,7 @@ int tirer(const int &x, const int &y, Grille &G, const bool &choixCaseEnVue) // 
             setcolor(DARKGRAY);
             setbkcolor(LIGHTGRAY);
             settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-            outtextxy(WIDTH/2-45, HEIGHT/2, "Coulé");
+            outtextxy(WIDTH / 2 - 45, HEIGHT / 2, "Coulé");
         }
         else
         {
@@ -480,64 +478,52 @@ int tirer(const int &x, const int &y, Grille &G, const bool &choixCaseEnVue) // 
             setcolor(DARKGRAY);
             setbkcolor(LIGHTGRAY);
             settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-            outtextxy(WIDTH/2-53, HEIGHT/2, "Touché");
+            outtextxy(WIDTH / 2 - 53, HEIGHT / 2, "Touché");
         }
     }
-    else if ((id == VIDE) || (!(choixCaseEnVue)&&(id == CEV_INTACTE)))
+    else if ((id == VIDE) || (!(choixCaseEnVue) && (id == CEV_INTACTE)))
     {
         G.tabGrille[x][y] = RATE;
         dessinerCase(x, y, G);
         setcolor(DARKGRAY);
         setbkcolor(LIGHTGRAY);
         settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-        outtextxy(WIDTH/2-37, HEIGHT/2, "Raté");
+        outtextxy(WIDTH / 2 - 37, HEIGHT / 2, "Raté");
     }
-    else if ((choixCaseEnVue == true)&&(id == CEV_INTACTE))
+    else if ((choixCaseEnVue == true) && (id == CEV_INTACTE))
     {
         G.tabGrille[x][y] = CEV_TOUCHE;
         dessinerCase(x, y, G);
         setcolor(DARKGRAY);
         setbkcolor(LIGHTGRAY);
         settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
-        outtextxy(WIDTH/2-37, HEIGHT/2-10, "Case");
-        outtextxy(WIDTH/2-53, HEIGHT/2+10, "en vue");
+        outtextxy(WIDTH / 2 - 37, HEIGHT / 2 - 10, "Case");
+        outtextxy(WIDTH / 2 - 53, HEIGHT / 2 + 10, "en vue");
     }
     return id;
 }
 
-void tirerJoueur(int &x, int &y, Grille &G, const bool &choixCaseEnVue, const bool &choixTirSalves) //ok
+void tirerJoueur(int &x, int &y, Grille &G, const bool &choixCaseEnVue) // ok
 {
-    if(choixTirSalves==false)
+    do
     {
-        do
-        {
-            lireSouris(x, y);
-            x = (int)(x - G.x) / G.cellWidth;
-            y = (int)(y - G.y) / G.cellHeight;
-        }   while (x < 0 || x >= CASES || y < 0 || y >= CASES || tirer(x, y, G, choixCaseEnVue) < CEV_INTACTE);
-    }
-    else
-    {
-        for(int i=1; i<=5; i++)
-        {
-            do
-            {
-                lireSouris(x, y);
-                x = (int)(x - G.x) / G.cellWidth;
-                y = (int)(y - G.y) / G.cellHeight;
-            }while (x < 0 || x >= CASES || y < 0 || y >= CASES || tirer(x, y, G, choixCaseEnVue) < CEV_INTACTE);
-        }
-    }
+        lireSouris(x, y);
+        x = (int)(x - G.x) / G.cellWidth;
+        y = (int)(y - G.y) / G.cellHeight;
+    } while (x < 0 || x >= CASES || y < 0 || y >= CASES || tirer(x, y, G, choixCaseEnVue) < CEV_INTACTE);
 }
 
-
-/*void tirerOrdi(bool modeDifficile, Grille &G) // TODO
+void tirerOrdi(Grille &G, const bool &modeDifficile, const bool &choixCaseEnVue) // TODO
 {
     static int x = 0;
     static int y = 0;
-    static bool bateauxDecouverts = false;
+    static int x_der, y_der;
+    static int cardinal = 0;
+    static bool bateauxDecouvert = false;
+    static bool huntMode = false;
+    int res;
 
-    if (!bateauxDecouverts)
+    if (!bateauxDecouvert && (!huntMode || !modeDifficile))
     {
         do
         {
@@ -551,31 +537,126 @@ void tirerJoueur(int &x, int &y, Grille &G, const bool &choixCaseEnVue, const bo
             {
                 y = 0;
             }
-        } while (tirer(x, y, G) < CEV_TOUCHE);
+            res = tirer(x, y, G, choixCaseEnVue);
+        } while (res < CEV_TOUCHE);
 
-        int i = 0;
+        int i = 1;
         while (i < G.nbBateaux && G.tabBateaux[i].state < VIDE)
         {
             i++;
         }
-        bateauxDecouverts = i == (G.nbBateaux - 1);
+        bateauxDecouvert = (i == (G.nbBateaux)) || (x == 0 && y == 0);
+
+        if (res > VIDE || res == CEV_INTACTE || bateauxDecouvert)
+        {
+            x_der = x;
+            y_der = y;
+            huntMode = true;
         }
+    }
     else
     {
-        if (modeDifficile)
+        if (!modeDifficile)
         {
-            // TODO
+            do
+            {
+                int i = 0;
+                do
+                {
+                    switch (cardinal)
+                    {
+                    case 0:
+                        x = x_der;
+                        y = (y_der + 1) % CASES;
+                        break;
+                    case 1:
+                        x = x_der;
+                        y = (y_der - 1 + CASES) % CASES;
+                        break;
+                    case 2:
+                        x = (x_der + 1) % CASES;
+                        y = y_der;
+                        break;
+                    case 3:
+                        x = (x_der - 1 + CASES) % CASES;
+                        y = y_der;
+                        break;
+                    case 4:
+                        x = x_der;
+                        y = y_der;
+                        break;
+                    }
+                    cardinal = (cardinal + 1) % 5;
+                    res = tirer(x, y, G, choixCaseEnVue);
+                    if (res > VIDE || res == TOUCHE)
+                    {
+                        x_der = x;
+                        y_der = y;
+                    }
+                    i++;
+                } while (res < CEV_TOUCHE && i < 5);
+
+                do
+                {
+                    x_der = aleat(0, CASES - 1);
+                    y_der = aleat(0, CASES - 1);
+                } while (G.tabGrille[x_der][y_der] < VIDE);
+            } while (res < CEV_TOUCHE);
         }
         else
         {
             do
             {
-                x = rand() % CASES;
-                y = rand() % CASES;
-            } while (tirer(x, y, G) < CEV_TOUCHE);
+                int i = 1;
+                bool possible = false;
+                do
+                {
+                    if (G.tabGrille[x_der][y_der] > VIDE)
+                    {
+                        x = x_der;
+                        y = y_der;
+                        possible = true;
+                    }
+                    if (G.tabGrille[x_der][y_der + i] > VIDE)
+                    {
+                        x = x_der;
+                        y = y_der + i;
+                        possible = true;
+                    }
+                    if (G.tabGrille[x_der][y_der - i] > VIDE)
+                    {
+                        x = x_der;
+                        y = y_der - i;
+                        possible = true;
+                    }
+                    if (G.tabGrille[x_der + i][y_der] > VIDE)
+                    {
+                        x = x_der + i;
+                        y = y_der;
+                        possible = true;
+                    }
+                    if (G.tabGrille[x_der - i][y_der] > VIDE)
+                    {
+                        x = x_der - i;
+                        y = y_der;
+                        possible = true;
+                    }
+                } while (G.tabGrille[x][y] < VIDE && i < CASES && !possible);
+                res = tirer(x, y, G, choixCaseEnVue);
+                if (res > VIDE)
+                {
+                    x_der = x;
+                    y_der = y;
+                }
+            } while (res < CEV_TOUCHE);
+
+            if (G.tabGrille[x][y] == COULE || G.tabGrille[x_der][y_der] == COULE)
+            {
+                huntMode = false;
+            }
         }
     }
-}*/
+}
 
 void initFenetre() // Works
 {
@@ -597,185 +678,190 @@ void initBouton(Bouton &B, int x1, int y1, int x2, int y2, int couleur, int tx1,
     B.texte = texte;
 }
 
+// Ajoute
 
-//Ajoute
-
-bool clicSurBouton(const Bouton &B, const int &x, const int &y) //ok
+bool clicSurBouton(const Bouton &B, const int &x, const int &y) // ok
 {
     return (B.x1 <= x && x <= B.x2) && (B.y1 <= y && y <= B.y2);
 }
 
-void choixOption(const Bouton &B1, const Bouton &B2, const Bouton &boutonSuivant, bool &choixOption) //ok
+void choixOption(const Bouton &B1, const Bouton &B2, const Bouton &boutonSuivant, bool &choixOption) // ok
 {
     int x, y;
     bool clicB1, clicB2, clicSuivant;
-    do{
-        if(clicB1)
+    do
+    {
+        if (clicB1)
         {
             dessinerContour(B1, WHITE);
         }
         else
         {
-            if(clicB2)
-            dessinerContour(B2, WHITE);
+            if (clicB2)
+                dessinerContour(B2, WHITE);
         }
-        do{
+        do
+        {
             lireSouris(x, y);
-            clicB1=clicSurBouton(B1, x, y);
-            clicB2=clicSurBouton(B2, x, y);
-        }while(clicB1 == false && clicB2 == false);
-        if(clicB1)
+            clicB1 = clicSurBouton(B1, x, y);
+            clicB2 = clicSurBouton(B2, x, y);
+        } while (clicB1 == false && clicB2 == false);
+        if (clicB1)
         {
             dessinerContour(B1, BLACK);
         }
         else
         {
-            if(clicB2)
-            dessinerContour(B2, BLACK);
+            if (clicB2)
+                dessinerContour(B2, BLACK);
         }
         lireSouris(x, y);
-        clicSuivant=clicSurBouton(boutonSuivant, x, y);
-    }while( (clicB1==clicB2) || (clicSuivant==false));
-    if(clicB1)
+        clicSuivant = clicSurBouton(boutonSuivant, x, y);
+    } while ((clicB1 == clicB2) || (clicSuivant == false));
+    if (clicB1)
     {
-        choixOption=true;
+        choixOption = true;
     }
     else
     {
-        choixOption=false;
+        choixOption = false;
     }
 }
 
-void choixOptionModeDeTir(const Bouton &B1, const Bouton &B2, const Bouton &boutonCaseEnVue, const Bouton &boutonSuivant, bool &choixTirSalves, bool &choixCaseEnVue) //ok
+void choixOptionModeDeTir(const Bouton &B1, const Bouton &B2, const Bouton &boutonCaseEnVue, const Bouton &boutonSuivant, bool &choixTirSalves, bool &choixCaseEnVue) // ok
 {
     int x, y;
     bool clicB1_1, clicB1_2, clicB2_1, clicB2_2, clicCEV_1, clicCEV_2, clicSuivant, clicB1, clicB2, hesitation;
     bool clicB1_F, clicB2_F;
-    do{
-        clicSuivant=false;
-        cout<<"debut des choix"<<endl;
+    do
+    {
+        clicSuivant = false;
+        cout << "debut des choix" << endl;
         dessinerContour(B1, WHITE);
         dessinerContour(B2, WHITE);
         dessinerCroix(boutonCaseEnVue, LIGHTBLUE);
-        do{
+        do
+        {
             lireSouris(x, y);
-            clicB1_1=clicSurBouton(B1, x, y);
-            clicB2_1=clicSurBouton(B2, x, y);
-            clicCEV_1=clicSurBouton(boutonCaseEnVue, x, y);
-        }while(clicB1_1==false && clicB2_1==false & clicCEV_1==false);
+            clicB1_1 = clicSurBouton(B1, x, y);
+            clicB2_1 = clicSurBouton(B2, x, y);
+            clicCEV_1 = clicSurBouton(boutonCaseEnVue, x, y);
+        } while (clicB1_1 == false && clicB2_1 == false & clicCEV_1 == false);
 
-        if(clicB1_1)
+        if (clicB1_1)
         {
             dessinerContour(B1, BLACK);
         }
         else
         {
-            if(clicB2_1)
+            if (clicB2_1)
             {
                 dessinerContour(B2, BLACK);
             }
             else
             {
-                if(clicCEV_1)
+                if (clicCEV_1)
                 {
                     dessinerCroix(boutonCaseEnVue, BLACK);
                 }
             }
         }
-        do{
-            hesitation=false;
+        do
+        {
+            hesitation = false;
             lireSouris(x, y);
-            clicB1_2=clicSurBouton(B1, x, y);
-            clicB2_2=clicSurBouton(B2, x, y);
-            clicCEV_2=clicSurBouton(boutonCaseEnVue, x, y);
-            clicSuivant=clicSurBouton(boutonSuivant, x, y);
-            if(clicB1_2 && clicB2_1 || clicB1_2 && clicCEV_1)
+            clicB1_2 = clicSurBouton(B1, x, y);
+            clicB2_2 = clicSurBouton(B2, x, y);
+            clicCEV_2 = clicSurBouton(boutonCaseEnVue, x, y);
+            clicSuivant = clicSurBouton(boutonSuivant, x, y);
+            if (clicB1_2 && clicB2_1 || clicB1_2 && clicCEV_1)
             {
                 dessinerContour(B1, BLACK);
                 dessinerContour(B2, WHITE);
-                if(clicB1_2 && clicB2_1)
+                if (clicB1_2 && clicB2_1)
                 {
-                    hesitation=true;
-                    clicB2_1=false;
+                    hesitation = true;
+                    clicB2_1 = false;
                 }
             }
             else
             {
-                if(clicB2_2 && clicB1_1 || clicB2_2 && clicCEV_1)
+                if (clicB2_2 && clicB1_1 || clicB2_2 && clicCEV_1)
                 {
                     dessinerContour(B2, BLACK);
                     dessinerContour(B1, WHITE);
-                    if(clicB2_2 && clicB1_1)
+                    if (clicB2_2 && clicB1_1)
                     {
-                        clicB1_1=false;
-                        hesitation=true;
+                        clicB1_1 = false;
+                        hesitation = true;
                     }
                 }
                 else
                 {
-                    if(clicCEV_2 && clicCEV_1)
+                    if (clicCEV_2 && clicCEV_1)
                     {
                         dessinerCroix(boutonCaseEnVue, LIGHTBLUE);
                     }
                     else
                     {
-                        if(clicCEV_2)
+                        if (clicCEV_2)
                         {
                             dessinerCroix(boutonCaseEnVue, BLACK);
                         }
                     }
                 }
             }
-        }while(clicB1_2==false && clicB2_2 == false && clicCEV_2 == false && clicSuivant == false);
+        } while (clicB1_2 == false && clicB2_2 == false && clicCEV_2 == false && clicSuivant == false);
 
-        clicB1=clicB1_1 || clicB1_2;
-        clicB2=clicB2_1 || clicB2_2;
-        if(hesitation == true)
+        clicB1 = clicB1_1 || clicB1_2;
+        clicB2 = clicB2_1 || clicB2_2;
+        if (hesitation == true)
         {
-            clicSuivant=false;
+            clicSuivant = false;
         }
         else
         {
-            if(clicSuivant==false)
+            if (clicSuivant == false)
             {
-                do{
-                    hesitation=false;
+                do
+                {
+                    hesitation = false;
                     lireSouris(x, y);
-                    clicSuivant=clicSurBouton(boutonSuivant, x, y);
-                    clicB1_F=clicSurBouton(B1, x, y);
-                    clicB2_F=clicSurBouton(B2, x, y);
-                    if(clicB2 && clicB1_F)
+                    clicSuivant = clicSurBouton(boutonSuivant, x, y);
+                    clicB1_F = clicSurBouton(B1, x, y);
+                    clicB2_F = clicSurBouton(B2, x, y);
+                    if (clicB2 && clicB1_F)
                     {
-                        hesitation=true;
+                        hesitation = true;
                     }
                     else
                     {
-                        if(clicB1 && clicB2_F)
+                        if (clicB1 && clicB2_F)
                         {
-                            hesitation=true;
+                            hesitation = true;
                         }
                     }
-                }while(clicSuivant==false && clicB1_F == false && clicB2_F == false);
+                } while (clicSuivant == false && clicB1_F == false && clicB2_F == false);
             }
         }
-    }while( (clicB1==clicB2) || (clicSuivant==false));
+    } while ((clicB1 == clicB2) || (clicSuivant == false));
 
-    if(clicB1_1 || clicB1_2)
+    if (clicB1_1 || clicB1_2)
     {
-        choixTirSalves=false;
+        choixTirSalves = false;
     }
     else
     {
-        choixTirSalves=true;
+        choixTirSalves = true;
     }
 
-    if(clicCEV_1 || clicCEV_2)
+    if (clicCEV_1 || clicCEV_2)
     {
-        choixCaseEnVue=true;
+        choixCaseEnVue = true;
     }
     else
     {
-        choixCaseEnVue=false;
+        choixCaseEnVue = false;
     }
 }
 
@@ -792,42 +878,42 @@ void menu(bool &choixMultiJoueur, bool &choixDifficile, bool &choixTirSalves, bo
 
     bool clicMultiJoueur, clicSolo, clicSuivant;
 
-    //Ecran 1 : mode solo ou multi
+    // Ecran 1 : mode solo ou multi
     setcolor(DARKGRAY);
     settextstyle(GOTHIC_FONT, HORIZ_DIR, 6);
-    outtextxy(WIDTH/2 - 258, 135, "Bataille navale");
+    outtextxy(WIDTH / 2 - 258, 135, "Bataille navale");
     initBouton(boutonMultiJoueur, WIDTH / 2 - longueurB, 270, WIDTH / 2 + longueurB, 270 + hauteurB, BLUE, 553, 287, taille_texte, "Multijoueur");
     dessinerBouton(boutonMultiJoueur);
-    initBouton(boutonSolo, WIDTH/2 - longueurB, 400, WIDTH/2 + longueurB, 400 + hauteurB, CYAN, 607, 417, taille_texte, "Solo");
+    initBouton(boutonSolo, WIDTH / 2 - longueurB, 400, WIDTH / 2 + longueurB, 400 + hauteurB, CYAN, 607, 417, taille_texte, "Solo");
     dessinerBouton(boutonSolo);
-    initBouton(boutonSuivant, WIDTH/2 - longueurB, 530, WIDTH/2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
+    initBouton(boutonSuivant, WIDTH / 2 - longueurB, 530, WIDTH / 2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
     dessinerBouton(boutonSuivant);
     choixOption(boutonMultiJoueur, boutonSolo, boutonSuivant, choixMultiJoueur);
 
-    //Ecran 1.1 : si mode solo
-    if(choixMultiJoueur==false)
+    // Ecran 1.1 : si mode solo
+    if (choixMultiJoueur == false)
     {
         setbkcolor(WHITE);
         cleardevice();
         setcolor(DARKGRAY);
         settextstyle(GOTHIC_FONT, HORIZ_DIR, 5);
-        outtextxy(WIDTH/2 - 330, 135, "Niveau de l'ordinateur");
+        outtextxy(WIDTH / 2 - 330, 135, "Niveau de l'ordinateur");
         initBouton(boutonFacile, WIDTH / 2 - longueurB, 270, WIDTH / 2 + longueurB, 270 + hauteurB, BLUE, 592, 287, taille_texte, "Facile");
         dessinerBouton(boutonFacile);
-        initBouton(boutonDifficile, WIDTH/2 - longueurB, 400, WIDTH/2 + longueurB, 400 + hauteurB, CYAN, 568, 417, taille_texte, "Difficile");
+        initBouton(boutonDifficile, WIDTH / 2 - longueurB, 400, WIDTH / 2 + longueurB, 400 + hauteurB, CYAN, 568, 417, taille_texte, "Difficile");
         dessinerBouton(boutonDifficile);
-        initBouton(boutonSuivant, WIDTH/2 - longueurB, 530, WIDTH/2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
+        initBouton(boutonSuivant, WIDTH / 2 - longueurB, 530, WIDTH / 2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
         dessinerBouton(boutonSuivant);
         choixOption(boutonFacile, boutonDifficile, boutonSuivant, choixDifficile);
         choixDifficile = !choixDifficile;
     }
 
-    //Ecran 2 : choix du mode de tir
+    // Ecran 2 : choix du mode de tir
     setbkcolor(WHITE);
     cleardevice();
     setcolor(DARKGRAY);
     settextstyle(GOTHIC_FONT, HORIZ_DIR, 5);
-    outtextxy(WIDTH/2 - 170, 110, "Mode de tir");
+    outtextxy(WIDTH / 2 - 170, 110, "Mode de tir");
     initBouton(boutonTirParCase, WIDTH / 2 - longueurB, 220, WIDTH / 2 + longueurB, 220 + hauteurB, BLUE, 544, 237, taille_texte, "Tir par case");
     dessinerBouton(boutonTirParCase);
     initBouton(boutonTirSalves, WIDTH / 2 - longueurB, 340, WIDTH / 2 + longueurB, 340 + hauteurB, CYAN, 529, 357, taille_texte, "Tir par salves");
@@ -836,31 +922,31 @@ void menu(bool &choixMultiJoueur, bool &choixDifficile, bool &choixTirSalves, bo
     setcolor(DARKGRAY);
     setbkcolor(WHITE);
     settextstyle(DEFAULT_FONT, HORIZ_DIR, taille_texte);
-    outtextxy(WIDTH/2 - 142, 450, "Case en vue ?");
-    initBouton(boutonCaseEnVue, WIDTH/2 - 127 + 220, 435, WIDTH/2  - 127 + 220 + 50, 435+50, LIGHTBLUE, 0, 0, 1, "");
+    outtextxy(WIDTH / 2 - 142, 450, "Case en vue ?");
+    initBouton(boutonCaseEnVue, WIDTH / 2 - 127 + 220, 435, WIDTH / 2 - 127 + 220 + 50, 435 + 50, LIGHTBLUE, 0, 0, 1, "");
     dessinerBouton(boutonCaseEnVue);
 
-    initBouton(boutonSuivant, WIDTH/2 - longueurB, 530, WIDTH/2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
+    initBouton(boutonSuivant, WIDTH / 2 - longueurB, 530, WIDTH / 2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
     dessinerBouton(boutonSuivant);
     choixOptionModeDeTir(boutonTirParCase, boutonTirSalves, boutonCaseEnVue, boutonSuivant, choixTirSalves, choixCaseEnVue);
 
-    //Ecran 3 : Nombre de bateaux
+    // Ecran 3 : Nombre de bateaux
     setbkcolor(WHITE);
     cleardevice();
     setcolor(DARKGRAY);
     settextstyle(GOTHIC_FONT, HORIZ_DIR, 5);
-    outtextxy(WIDTH/2 - 296, 135, "Nombre de bateaux");
+    outtextxy(WIDTH / 2 - 296, 135, "Nombre de bateaux");
     initBouton(bouton5Bateaux, WIDTH / 2 - longueurB, 270, WIDTH / 2 + longueurB, 270 + hauteurB, BLUE, 566, 287, taille_texte, "5 bateaux");
     dessinerBouton(bouton5Bateaux);
-    initBouton(bouton6Bateaux, WIDTH/2 - longueurB, 400, WIDTH/2 + longueurB, 400 + hauteurB, CYAN, 566, 417, taille_texte, "6 bateaux");
+    initBouton(bouton6Bateaux, WIDTH / 2 - longueurB, 400, WIDTH / 2 + longueurB, 400 + hauteurB, CYAN, 566, 417, taille_texte, "6 bateaux");
     dessinerBouton(bouton6Bateaux);
-    initBouton(boutonSuivant, WIDTH/2 - longueurB, 530, WIDTH/2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
+    initBouton(boutonSuivant, WIDTH / 2 - longueurB, 530, WIDTH / 2 + longueurB, 530 + hauteurB, GREEN, 582, 547, taille_texte, "Suivant");
     dessinerBouton(boutonSuivant);
     choixOption(bouton5Bateaux, bouton6Bateaux, boutonSuivant, choix6Bateaux);
     choix6Bateaux = !choix6Bateaux;
 }
 
-//fin ajoute
+// fin ajoute
 
 void initBateau(Bateau &B, int id, int size) // Works
 {
@@ -894,47 +980,47 @@ void initJoueur(Joueur &J, string nom, Grille grille) // Works
     J.grille = grille;
 }
 
-//Ajoute
+// Ajoute
 
-bool jeu_fini(const Joueur &J1, const Joueur &J2) //ok //joueur 1 qui a tiré sur la grille du J2
+bool jeu_fini(const Joueur &J1, const Joueur &J2) // ok //joueur 1 qui a tiré sur la grille du J2
 {
-    bool jeuFini=true;
-    int i=0;
-    while(i<J2.grille.nbBateaux && jeuFini)
+    bool jeuFini = true;
+    int i = 0;
+    while (i < J2.grille.nbBateaux && jeuFini)
     {
-        if(J2.grille.tabBateaux[i].state != COULE)
+        if (J2.grille.tabBateaux[i].state != COULE)
         {
-            jeuFini=false;
+            jeuFini = false;
         }
         i++;
     }
-    if(jeuFini)
+    if (jeuFini)
     {
-        cout<<"Jeu fini"<<endl;
+        cout << "Jeu fini" << endl;
     }
     else
     {
-        cout<<"Jeu pas fini"<<endl;
+        cout << "Jeu pas fini" << endl;
     }
     return jeuFini;
 }
 
-bool victoire_J1(const Joueur &J1) //ok
+bool victoire_J1(const Joueur &J1) // ok
 {
-    bool victoireJ1=false;
-    int i=0;
-    while(i<J1.grille.nbBateaux && (victoireJ1==false))
+    bool victoireJ1 = false;
+    int i = 0;
+    while (i < J1.grille.nbBateaux && (victoireJ1 == false))
     {
-        if(J1.grille.tabBateaux[i].state != COULE)
+        if (J1.grille.tabBateaux[i].state != COULE)
         {
-            victoireJ1=true;
+            victoireJ1 = true;
         }
         i++;
     }
     return victoireJ1;
 }
 
-//fin ajoute
+// fin ajoute
 
 void jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux) // TODO
 {
@@ -982,12 +1068,12 @@ int main()
     // menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
 
     // Test dessinerGrille
-    /*dessinerGrille(G1);
-    dessinerGrille(G2);*/
+    // dessinerGrille(G1);
+    // dessinerGrille(G2);
 
     // Test placerBateau
-    /*placerBateauxJoueur(G1.tabBateaux, G1);
-    placerBateauxAleat(G2.tabBateaux, G2);*/
+    // placerBateauxAleat(G1.tabBateaux, G1);
+    // placerBateauxAleat(G2.tabBateaux, G2);
 
     // // Test dessinerCase
     // G1.tabGrille = {{{COULE, CEV_INTACTE, CEV_TOUCHE, TOUCHE, RATE, VIDE, VIDE, VIDE, VIDE, VIDE},
@@ -1010,22 +1096,22 @@ int main()
     // }
 
     // Tieu
-    /* Test tirer
-    int x, y;
-    for (int i = 0; i < 10; i++)
-    {
-        tirerJoueur(x, y, G1);
-    }
+    // Test tirer
+    // int x, y;
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     tirerJoueur(x, y, G1, false);
+    // }
 
     // Test tirerOrdi simple
-    for (int i = 0; i < 70; i++)
+    for (int i = 0; i < 100; i++)
     {
-        tirerOrdi(false, G2);
-    }*
+        tirerOrdi(G2, true, false);
+        outtextxy(0, 0, "" + i);
+        getch();
+    }
 
     // Fin tieu
-
-
 
     /*initTabGrille(TG);
     initGrille(G, 0, 0, TG, 1,TB);
@@ -1034,56 +1120,52 @@ int main()
     dessinerGrille(J.grille);
     dessinerBateau(J.grille.tabBateaux[0], J.grille);*/
 
+    // debut 18.05 tieu *****************************************************************************************************************************************
 
+    // TEST menu ______________________________________________________________________________________________________________________________________
+    // bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
+    // menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
+    // if (choixMultiJoueur)
+    // {
+    //     cout << "Mode multijoueur choisi" << endl;
+    // }
+    // else
+    // {
+    //     if (choixDifficile)
+    //     {
+    //         cout << "Mode solo : difficile" << endl;
+    //     }
+    //     else
+    //     {
+    //         cout << "Mode solo : facile" << endl;
+    //     }
+    // }
+    // if (choixTirSalves)
+    // {
+    //     cout << "Tir par salves" << endl;
+    // }
+    // else
+    // {
+    //     cout << "Tir par case" << endl;
+    // }
+    // if (choixCaseEnVue)
+    // {
+    //     cout << "Avec cases en vue" << endl;
+    // }
+    // else
+    // {
+    //     cout << "Sans cases en vue" << endl;
+    // }
+    // if (choix6Bateaux)
+    // {
+    //     cout << "6 bateaux" << endl;
+    // }
+    // else
+    // {
+    //     cout << "5 bateaux" << endl;
+    // }
 
-
-
-    //debut 18.05 tieu *****************************************************************************************************************************************
-
-    //TEST menu ______________________________________________________________________________________________________________________________________
-    bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
-    menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
-    if(choixMultiJoueur)
-    {
-        cout<<"Mode multijoueur choisi"<<endl;
-    }
-    else
-    {
-        if(choixDifficile)
-        {
-            cout<<"Mode solo : difficile"<<endl;
-        }
-        else
-        {
-            cout<<"Mode solo : facile"<<endl;
-        }
-    }
-    if(choixTirSalves)
-    {
-        cout<<"Tir par salves"<<endl;
-    }
-    else
-    {
-        cout<<"Tir par case"<<endl;
-    }
-    if(choixCaseEnVue)
-    {
-        cout<<"Avec cases en vue"<<endl;
-    }
-    else
-    {
-        cout<<"Sans cases en vue"<<endl;
-    }
-    if(choix6Bateaux)
-    {
-        cout<<"6 bateaux"<<endl;
-    }
-    else
-    {
-        cout<<"5 bateaux"<<endl;
-    }
-
-    //TEST dessinerContour ______________________________________________________________________________________________________________________________________
+    // TEST dessinerContour ______________________________________________________________________________________________________________________________________
     /*
     setbkcolor(WHITE);
     cleardevice();
@@ -1097,7 +1179,7 @@ int main()
     getch();
     dessinerContour(boutonMultiJoueur, WHITE);*/
 
-    //TEST clicSurBouton ______________________________________________________________________________________________________________________________________
+    // TEST clicSurBouton ______________________________________________________________________________________________________________________________________
     /*Bouton boutonMultiJoueur;
     int x, y;
     int longueurB = 250 / 2;
@@ -1118,7 +1200,7 @@ int main()
         }
     }*/
 
-    //TEST dessinerCroix sur le bouton carré Case en vue ______________________________________________________________________________________________________________________________________
+    // TEST dessinerCroix sur le bouton carré Case en vue ______________________________________________________________________________________________________________________________________
     /*Bouton boutonCaseEnVue;
     setcolor(DARKGRAY);
     setbkcolor(WHITE);
@@ -1133,7 +1215,7 @@ int main()
     getch();
     dessinerCroix(boutonCaseEnVue, LIGHTBLUE);*/
 
-    //TEST afficherDeuxGrilles (selon le point de vue) et afficherCacheEcran ______________________________________________________________________________________________________________________________________
+    // TEST afficherDeuxGrilles (selon le point de vue) et afficherCacheEcran ______________________________________________________________________________________________________________________________________
     /*Joueur J1, J2;
     int x, y;
     J1.grille=G2;
@@ -1177,8 +1259,7 @@ int main()
     cleardevice();
     afficherDeuxGrilles(J1, J2);*/
 
-
-    //TEST jeu_fini ______________________________________________________________________________________________________________________________________
+    // TEST jeu_fini ______________________________________________________________________________________________________________________________________
     /*Joueur J1, J2;
     int x, y;
     bool jeuFini;
@@ -1228,8 +1309,7 @@ int main()
         }
     }*/
 
-
-    //TEST victoireJ1 ______________________________________________________________________________________________________________________________________
+    // TEST victoireJ1 ______________________________________________________________________________________________________________________________________
     /*Joueur J1, J2;
     int x, y;
     bool victoireJ1;
@@ -1251,9 +1331,7 @@ int main()
         cout<<"Joueur 1 a perdu"<<endl;
     }*/
 
-
-    //fin 19.05 tieu *****************************************************************************************************************************************
-
+    // fin 19.05 tieu *****************************************************************************************************************************************
 
     getch();
 
