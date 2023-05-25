@@ -678,8 +678,6 @@ void initBouton(Bouton &B, int x1, int y1, int x2, int y2, int couleur, int tx1,
     B.texte = texte;
 }
 
-// Ajoute
-
 bool clicSurBouton(const Bouton &B, const int &x, const int &y) // ok
 {
     return (B.x1 <= x && x <= B.x2) && (B.y1 <= y && y <= B.y2);
@@ -946,8 +944,6 @@ void menu(bool &choixMultiJoueur, bool &choixDifficile, bool &choixTirSalves, bo
     choix6Bateaux = !choix6Bateaux;
 }
 
-// fin ajoute
-
 void initBateau(Bateau &B, int id, int size) // Works
 {
     B.id = id;
@@ -979,8 +975,6 @@ void initJoueur(Joueur &J, string nom, Grille grille) // Works
     J.nom = nom;
     J.grille = grille;
 }
-
-// Ajoute
 
 bool jeu_fini(const Joueur &J1, const Joueur &J2) // ok //joueur 1 qui a tiré sur la grille du J2
 {
@@ -1020,49 +1014,207 @@ bool victoire_J1(const Joueur &J1) // ok
     return victoireJ1;
 }
 
-// fin ajoute
-
-void jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux) // TODO
+void finPartie(bool victoireJ1, bool choixMultiJoueur_org) // TODO
 {
-    setbkcolor(LIGHTGRAY);
-    cleardevice();
-    // TODO
+    int longueurB = 250 / 2;
+    int hauteurB = 50;
+    if (victoireJ1)
+    {
+        cleardevice();
+        setcolor(DARKGRAY);
+        settextstyle(GOTHIC_FONT, HORIZ_DIR, 5);
+        outtextxy(WIDTH / 2 - 296, 135, "Victoire du joueur 1");
+    }
+    else
+    {
+        if (choixMultiJoueur_org)
+        {
+            cleardevice();
+            setcolor(DARKGRAY);
+            settextstyle(GOTHIC_FONT, HORIZ_DIR, 5);
+            outtextxy(WIDTH / 2 - 296, 135, "Victoire du joueur 2");
+        }
+        else
+        {
+            cleardevice();
+            setcolor(DARKGRAY);
+            settextstyle(GOTHIC_FONT, HORIZ_DIR, 5);
+            outtextxy(WIDTH / 2 - 296, 135, "Victoire de l'ordinateur");
+        }
+    }
+    Bouton boutonRetourMenu;
+    initBouton(boutonRetourMenu, WIDTH / 2 - longueurB, 530, WIDTH / 2 + longueurB, 530 + hauteurB, BLUE, 582, 547, 2, "Retour au menu");
+    dessinerBouton(boutonRetourMenu);
+    int x, y;
+    do
+    {
+        lireSouris(x, y);
+    } while (!clicSurBouton(boutonRetourMenu, x, y));
 }
 
-void finPartie(Joueur &J1, Joueur &J2, bool victoireJ1) // TODO
+void initJeu(Joueur &J1, Joueur &J2, bool choix6Bateaux)
 {
-    // TODO
+    Grille G1;
+    Bateau B1_1, B2_1, B3_1, B4_1, B5_1;
+    initBateau(B1_1, 1, PORTE_AVION);
+    initBateau(B2_1, 2, CROISEUR);
+    initBateau(B3_1, 3, CONTRE_TORPILLEUR);
+    initBateau(B4_1, 4, CONTRE_TORPILLEUR);
+    initBateau(B5_1, 5, TORPILLEUR);
+    TAB_BATEAUX TB1 = {B1_1, B2_1, B3_1, B4_1, B5_1};
+    initGrille(G1, 155, 175, 5, TB1);
+    initJoueur(J1, "Joueur 1", G1);
+
+    Grille G2;
+    Bateau B1_2, B2_2, B3_2, B4_2, B5_2;
+    initBateau(B1_2, 1, PORTE_AVION);
+    initBateau(B2_2, 2, CROISEUR);
+    initBateau(B3_2, 3, CONTRE_TORPILLEUR);
+    initBateau(B4_2, 4, CONTRE_TORPILLEUR);
+    initBateau(B5_2, 5, TORPILLEUR);
+    TAB_BATEAUX TB2 = {B1_2, B2_2, B3_2, B4_2, B5_2};
+    initGrille(G2, 755, 175, 5, TB2);
+    initJoueur(J2, "Joueur 2", G2);
+
+    if (choix6Bateaux)
+    {
+        Bateau B6_1, B6_2;
+        initBateau(B6_1, 6, TORPILLEUR);
+        initBateau(B6_2, 6, TORPILLEUR);
+        J1.grille.nbBateaux++;
+        J2.grille.nbBateaux++;
+        J1.grille.tabBateaux[5] = B6_1;
+        J2.grille.tabBateaux[5] = B6_2;
+    }
+}
+
+void jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, bool choixTirSalves, bool choixCaseEnVue, bool choix6Bateaux)
+{
+    initJeu(J1, J2, choix6Bateaux);
+    int x, y;
+    setbkcolor(LIGHTGRAY);
+    cleardevice();
+    bool jeuFini = false;
+    if (choixMultiJoueur == true)
+    {
+        afficherCacheEcran(1);
+        getch();
+        afficherDeuxGrilles(J1, J2);
+        placerBateauxJoueur(J1.grille.tabBateaux, J1.grille);
+        afficherCacheEcran(2);
+        getch();
+        afficherDeuxGrilles(J2, J1);
+        placerBateauxJoueur(J2.grille.tabBateaux, J2.grille);
+
+        while (jeuFini == false)
+        {
+            afficherCacheEcran(1);
+            getch();
+            setbkcolor(LIGHTGRAY);
+            cleardevice();
+            afficherDeuxGrilles(J1, J2);
+            if (choixTirSalves)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    tirerJoueur(x, y, J2.grille, choixCaseEnVue);
+                }
+            }
+            tirerJoueur(x, y, J2.grille, choixCaseEnVue);
+            for (int i = 0; i < J2.grille.nbBateaux; i++)
+            {
+                cout << J2.grille.tabBateaux[i].state << endl;
+            }
+            getch();
+            jeuFini = jeu_fini(J1, J2); // verification si le joueur 1 a coulé tous les bateaux du joueur 2
+            if (jeuFini == false)
+            {
+                afficherCacheEcran(2);
+                getch();
+                afficherDeuxGrilles(J2, J1);
+                if (choixTirSalves)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        tirerJoueur(x, y, J1.grille, choixCaseEnVue);
+                    }
+                }
+                tirerJoueur(x, y, J1.grille, choixCaseEnVue);
+
+                for (int i = 0; i < J1.grille.nbBateaux; i++)
+                {
+                    cout << J1.grille.tabBateaux[i].state << endl;
+                }
+                getch();
+                jeuFini = jeu_fini(J2, J1);
+            }
+        }
+        getch();
+    }
+    else
+    {
+        bool ChoixCaseEnVueOrdi = choixCaseEnVue;
+        if (choixDifficile == false) // si on est en mode facile : l'ordinateur ne prend pas en compte les cases en vue même si le mode case en vue est activé
+        {
+            ChoixCaseEnVueOrdi = false;
+        }
+        afficherDeuxGrilles(J1, J2);
+        placerBateauxJoueur(J1.grille.tabBateaux, J1.grille);
+        setbkcolor(LIGHTGRAY);
+        cleardevice();
+
+        placerBateauxAleat(J2.grille.tabBateaux, J2.grille);
+        // placerBateauxJoueur(J2.grille.tabBateaux, J2.grille); // NORMALEMENT PLACEMENT BATEAUX PAR LORDINATEUR
+        afficherDeuxGrilles(J2, J1);                          // normalement placement bateau aleat
+
+        setbkcolor(LIGHTGRAY);
+        cleardevice();
+
+        afficherDeuxGrilles(J1, J2);
+        while (jeuFini == false)
+        {
+            if (choixTirSalves)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    tirerJoueur(x, y, J2.grille, choixCaseEnVue);
+                }
+            }
+            tirerJoueur(x, y, J2.grille, choixCaseEnVue);
+            for (int i = 0; i < J2.grille.nbBateaux; i++)
+            {
+                cout << J2.grille.tabBateaux[i].state << endl;
+            }
+            jeuFini = jeu_fini(J1, J2); // verification si le joueur 1 a coulé tous les bateaux du joueur 2
+            if (jeuFini == false)
+            {
+                if (choixTirSalves)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        tirerOrdi(J1.grille, choixDifficile, choixCaseEnVue);
+                    }
+                }
+                tirerOrdi(J1.grille, choixDifficile, choixCaseEnVue);
+                for (int i = 0; i < J1.grille.nbBateaux; i++)
+                {
+                    cout << J1.grille.tabBateaux[i].state << endl;
+                }
+                jeuFini = jeu_fini(J2, J1);
+            }
+        }
+        getch();
+    }
 }
 
 int main()
 {
-    debugLevel = 2;
-    initFenetre();
-    verbose("Test", DEBUG);
-    // Grille 1
-    Grille G1;
-    Bateau B1_1, B1_2, B1_3, B1_4, B1_5;
-    initBateau(B1_1, 1, PORTE_AVION);
-    initBateau(B1_2, 2, CROISEUR);
-    initBateau(B1_3, 3, CONTRE_TORPILLEUR);
-    initBateau(B1_4, 4, TORPILLEUR);
-    initBateau(B1_5, 5, TORPILLEUR);
-    TAB_BATEAUX TB1 = {B1_1, B1_2, B1_3, B1_4, B1_5};
-    initGrille(G1, 155, 175, 5, TB1);
-
-    // Grille 2
-    Grille G2;
-    Bateau B2_1, B2_2, B2_3, B2_4, B2_5;
-    initBateau(B2_1, 1, PORTE_AVION);
-    initBateau(B2_2, 2, CROISEUR);
-    initBateau(B2_3, 3, CONTRE_TORPILLEUR);
-    initBateau(B2_4, 4, TORPILLEUR);
-    initBateau(B2_5, 5, TORPILLEUR);
-    TAB_BATEAUX TB2 = {B2_1, B2_2, B2_3, B2_4, B2_5};
-    initGrille(G2, 755, 175, 5, TB2);
+    // debugLevel = 2;
+    // initFenetre();
+    // verbose("Test", DEBUG);
     // Couleur de fond
-    setbkcolor(LIGHTGRAY);
-    cleardevice();
+    // setbkcolor(LIGHTGRAY);
+    // cleardevice();
 
     // bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
     // menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
@@ -1104,12 +1256,12 @@ int main()
     // }
 
     // Test tirerOrdi simple
-    for (int i = 0; i < 100; i++)
-    {
-        tirerOrdi(G2, true, false);
-        outtextxy(0, 0, "" + i);
-        getch();
-    }
+    // for (int i = 0; i < 100; i++)
+    // {
+    //     tirerOrdi(G2, false, false);
+    //     outtextxy(0, 0, "" + i);
+    //     getch();
+    // }
 
     // Fin tieu
 
@@ -1333,15 +1485,36 @@ int main()
 
     // fin 19.05 tieu *****************************************************************************************************************************************
 
-    getch();
+    // debut 25.05*********************************************************************************************************************************************
 
-    //     bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
-    //     Joueur J1, J2;
-    //     initFenetre();
-    //     menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
-    //     initJoueur(J1, "Joueur 1", initGrille(0, 0, initTabGrille()), choix6Bateaux ? 6 : 5, initTabBateaux(choix6Bateaux));
-    //     initJoueur(J2, "Joueur 2", initGrille(0, 0, initTabGrille()), choix6Bateaux ? 6 : 5, initTabBateaux(choix6Bateaux));
-    //     jeu(J1, J2, choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
-    //     finPartie(J1, J2);
+    // Test initJeu
+    // Joueur Player1, Player2;
+    // bool choix6Bateaux = false;
+    // initJeu(Player1, Player2, choix6Bateaux);
+    // afficherDeuxGrilles(Player1, Player2);
+    // placerBateauxJoueur(Player1.grille.tabBateaux, Player1.grille);
+
+    // Test procédure jeu (contenant initJeu et la boucle de jeu)
+    // Joueur P1, P2;
+    // bool choixMultijoueur = true;
+    // bool choixDifficile = false;
+    // bool choixTirSalves = true; // ok
+    // bool choixCaseEnVue = true; // ok
+    // bool choix6Bateaux = false; // ok
+    // jeu(P1, P2, choixMultijoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
+
+    // fin 25.05***********************************************************************************************************************************************
+
+    initFenetre();
+    while (true)
+    {
+        cleardevice();
+        Joueur P1, P2;
+        bool choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux;
+        menu(choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
+        setbkcolor(LIGHTGRAY);
+        jeu(P1, P2, choixMultiJoueur, choixDifficile, choixTirSalves, choixCaseEnVue, choix6Bateaux);
+        finPartie(victoire_J1(P1), choixMultiJoueur);
+    }
     return 0;
 }
