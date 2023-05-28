@@ -9,15 +9,13 @@
 #define NB_BATEAUX_MAX 7
 #define NB_BOUTONS_MAX 10
 
-
-
 using namespace std;
 
 enum warning
 {
-	ERREUR = 0,
-	WARNING = 1,
-	DEBUG = 2
+    ERREUR = 0,
+    WARNING = 1,
+    DEBUG = 2
 };
 
 enum states
@@ -27,7 +25,9 @@ enum states
 	CEV_TOUCHE = -2,
 	RATE = -3,
 	TOUCHE = -4,
-	COULE = -5
+	COULE = -5,
+    CEV_TOUCHE_INUTILE = -6,
+    BATEAU_NON_TOUCHE = 10
 };
 
 enum bateau_type
@@ -37,6 +37,10 @@ enum bateau_type
 	CONTRE_TORPILLEUR = 3,
 	TORPILLEUR = 2,
 };
+
+struct Point{
+            int x,y;
+            };
 
 /**
  *Structure pour les boutons contient: les coordonn�es (x1,y1) et (x2,y2) du coin sup�rieur gauche et du coin inf�rieur droit, la couleur, et le texte a afficher.
@@ -60,7 +64,10 @@ struct Bateau
 	int y;
 	int taille;
 	int state;
+	string nom;
 	int orientation; // 0 = horizontal, 1 = vertical
+	bool directionTrouve;
+	bool bateauToucheDeuxFois;
 };
 
 using TAB_GRILLE = array<array<int, CASES>, CASES>;
@@ -265,4 +272,4 @@ void jeu(Joueur &J1, Joueur &J2, bool choixMultiJoueur, bool choixDifficile, boo
  * \param J1 le joueur 1
  * \param J2 le joueur 2
  */
-void finPartie(Joueur &J1, Joueur &J2, bool victoireJ1);
+void finPartie(bool victoireJ1, bool choixMultiJoueur_org);
